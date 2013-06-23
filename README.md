@@ -6,7 +6,7 @@ This plugin provides Flickr POSSE support for idno.
 Installation
 ------------
 
-* Drop the Flickr folder into the IndoPlugins folder of your idno installation.
+* Drop the Flickr folder into the IdnoPlugins folder of your idno installation.
 * Log into idno and click on Administration.
 * Click "install" next to Flickr.
 
