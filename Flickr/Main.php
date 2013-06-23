@@ -29,7 +29,14 @@
                                     $flickrAPI->token = (\Idno\Core\site()->session()->currentUser()->flickr['access_token']);
                                     $tags = str_replace('#','',implode(' ', $object->getTags())); // Get string of non-hashtagged tags
                                     try {
-                                        $flickrAPI->upload($attachment['url'], $object->getTitle(), $object->getDescription() . "\n\nOriginal: " . $object->getURL(), $tags, ["is_public"=>1]);
+                                        $photo_id = $flickrAPI->upload($attachment['url'], $object->getTitle(), $object->getDescription() . "\n\nOriginal: " . $object->getURL(), $tags, ["is_public"=>1], 0);
+                                        if (!empty($photo_id)) {
+                                            $photo = $flickrAPI->photosGetInfo($photo_id);
+                                        	if (!empty($photo['urls']['photopage'])) {
+                                        		$object->setPosseLink('flickr',$photo['urls']['photopage']);
+                                        		$object->save();
+                                        	}
+                                        }
                                     }
                                     catch (\FlickrApiException $e) {
                                         error_log('Could not post image to Flickr: ' . $e->getMessage());
