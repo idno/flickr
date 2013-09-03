@@ -16,35 +16,40 @@
                 // Add menu items to account & administration screens
                     \Idno\Core\site()->template()->extendTemplate('admin/menu/items','admin/flickr/menu');
                     \Idno\Core\site()->template()->extendTemplate('account/menu/items','account/flickr/menu');
+                    
+                // Add POSSE button
+					\Idno\Core\site()->template()->extendTemplate('content/possebuttons', 'forms/posse/flickr');
             }
 
             function registerEventHooks() {
                 // Push "images" to Flickr
                 \Idno\Core\site()->addEventHook('post/image',function(\Idno\Core\Event $event) {
-                    $object = $event->data()['object'];
-                    if ($attachments = $object->getAttachments()) {
-                        foreach($attachments as $attachment) {
-                            if ($this->hasFlickr()) {
-                                if ($flickrAPI = $this->connect()) {
-                                    $flickrAPI->token = (\Idno\Core\site()->session()->currentUser()->flickr['access_token']);
-                                    $tags = str_replace('#','',implode(' ', $object->getTags())); // Get string of non-hashtagged tags
-                                    try {
-                                        $photo_id = $flickrAPI->upload($attachment['url'], $object->getTitle(), $object->getDescription() . "\n\nOriginal: " . $object->getURL(), $tags, ["is_public"=>1], 0);
-                                        if (!empty($photo_id)) {
-                                            $photo = $flickrAPI->photosGetInfo($photo_id);
-                                        	if (!empty($photo['urls']['photopage'])) {
-                                        		$object->setPosseLink('flickr',$photo['urls']['photopage']);
-                                        		$object->save();
-                                        	}
-                                        }
-                                    }
-                                    catch (\FlickrApiException $e) {
-                                        error_log('Could not post image to Flickr: ' . $e->getMessage());
-                                    }
-                                }
-                            }
-                        }
-                    }
+					if ((!empty($_REQUEST['posseMethod'])) && (in_array('flickr', $_REQUEST['posseMethod']))) { // TODO: Use the correct input functions
+						$object = $event->data()['object'];
+						if ($attachments = $object->getAttachments()) {
+							foreach($attachments as $attachment) {
+								if ($this->hasFlickr()) {
+									if ($flickrAPI = $this->connect()) {
+										$flickrAPI->token = (\Idno\Core\site()->session()->currentUser()->flickr['access_token']);
+										$tags = str_replace('#','',implode(' ', $object->getTags())); // Get string of non-hashtagged tags
+										try {
+											$photo_id = $flickrAPI->upload($attachment['url'], $object->getTitle(), $object->getDescription() . "\n\nOriginal: " . $object->getURL(), $tags, ["is_public"=>1], 0);
+											if (!empty($photo_id)) {
+												$photo = $flickrAPI->photosGetInfo($photo_id);
+												if (!empty($photo['urls']['photopage'])) {
+													$object->setPosseLink('flickr',$photo['urls']['photopage']);
+													$object->save();
+												}
+											}
+										}
+										catch (\FlickrApiException $e) {
+											error_log('Could not post image to Flickr: ' . $e->getMessage());
+										}
+									}
+								}
+							}
+						}
+					}
                 });
             }
 
