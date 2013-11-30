@@ -19,6 +19,11 @@
             }
 
             function registerEventHooks() {
+
+                \Idno\Core\site()->syndication()->registerService('flickr', function() {
+                    return $this->hasFlickr();
+                }, ['image']);
+
                 // Push "images" to Flickr
                 \Idno\Core\site()->addEventHook('post/image',function(\Idno\Core\Event $event) {
                     $object = $event->data()['object'];
