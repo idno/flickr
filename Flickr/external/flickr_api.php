@@ -10,9 +10,9 @@
     class Flickr_API {
         private $_cfg = array('api_key'         => '',
                               'api_secret'      => '',
-                              'endpoint'        => 'http://www.flickr.com/services/rest/',
-                              'auth_endpoint'   => 'http://www.flickr.com/services/auth/?',
-                              'upload_endpoint' => 'http://www.flickr.com/services/upload/',
+                              'endpoint'        => 'https://api.flickr.com/services/rest/',
+                              'auth_endpoint'   => 'https://www.flickr.com/services/auth/?',
+                              'upload_endpoint' => 'https://up.flickr.com/services/upload/',
                               'conn_timeout'    => 20,
                               'io_timeout'      => 60 );
 
