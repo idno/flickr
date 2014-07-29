@@ -65,7 +65,6 @@
             }
 
             curl_close($req);
-            file_put_contents('/tmp/curl.log',print_r($params,true)."\n".$this->_http_body."\n\n",FILE_APPEND);
 
             $xml = simplexml_load_string($this->_http_body);
             $this->xml = $xml;
