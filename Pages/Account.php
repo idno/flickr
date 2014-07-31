@@ -16,14 +16,7 @@
             {
                 $this->gatekeeper(); // Logged-in users only
                 if ($flickr = \Idno\Core\site()->plugins()->get('Flickr')) {
-                    if (!$flickr->hasFlickr()) {
-                        if ($flickrAPI = $flickr->connect()) {
-                            /* @var \Flickr $flickrAPI */
-                            $login_url = $flickrAPI->getAuthUrl('write');
-                        }
-                    } else {
-                        $login_url = '';
-                    }
+                    $login_url = $flickr->getAuthURL();
                 }
                 $t = \Idno\Core\site()->template();
                 $body = $t->__(['login_url' => $login_url])->draw('account/flickr');

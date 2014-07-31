@@ -16,6 +16,7 @@
                 // Add menu items to account & administration screens
                     \Idno\Core\site()->template()->extendTemplate('admin/menu/items','admin/flickr/menu');
                     \Idno\Core\site()->template()->extendTemplate('account/menu/items','account/flickr/menu');
+                    \Idno\Core\site()->template()->extendTemplate('onboarding/connect/networks','onboarding/connect/flickr');
             }
 
             function registerEventHooks() {
@@ -51,6 +52,26 @@
                         }
                     }
                 });
+            }
+
+            /**
+             * Return the URL required to authenticate with the API
+             * @return string
+             */
+            function getAuthURL() {
+
+                $flickr = $this;
+                if (!$flickr->hasFlickr()) {
+                    if ($flickrAPI = $flickr->connect()) {
+                        /* @var \Flickr $flickrAPI */
+                        $login_url = $flickrAPI->getAuthUrl('write');
+                    }
+                } else {
+                    $login_url = '';
+                }
+
+                return $login_url;
+
             }
 
             /**
