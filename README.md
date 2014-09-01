@@ -1,13 +1,13 @@
-Flickr for idno
-===============
+Flickr for Known
+================
 
-This plugin provides Flickr POSSE support for idno.
+This plugin provides Flickr POSSE support for Known.
 
 Installation
 ------------
 
-* Drop the Flickr folder into the IdnoPlugins folder of your idno installation.
-* Log into idno and click on Administration.
+* Drop the Flickr folder into the IdnoPlugins folder of your Known installation.
+* Log into Known and click on Administration.
 * Click "install" next to Flickr.
 
 Contains
