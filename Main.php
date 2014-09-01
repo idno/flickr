@@ -6,7 +6,7 @@
 
             function registerPages() {
                 // Register the callback URL
-                    \Idno\Core\site()->addPageHandler('flickr/callback','\IdnoPlugins\Flickr\Pages\Callback');
+                    \Idno\Core\site()->addPageHandler('flickr/callback','\IdnoPlugins\Flickr\Pages\Callback',true);
                 // Register admin settings
                     \Idno\Core\site()->addPageHandler('admin/flickr','\IdnoPlugins\Flickr\Pages\Admin');
                 // Register settings page

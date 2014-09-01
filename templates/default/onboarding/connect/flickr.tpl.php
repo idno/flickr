@@ -10,7 +10,7 @@
 
         if (!empty(\Idno\Core\site()->session()->currentUser()->flickr)) { echo 'connected'; }
 
-    ?>">Flickr<?php
+    ?>" target="_top">Flickr<?php
 
         if (!empty(\Idno\Core\site()->session()->currentUser()->flickr)) { echo ' - connected!'; }
 
