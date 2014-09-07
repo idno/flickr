@@ -19,7 +19,7 @@
                         <input type="text" class="span4" value="<?=\Idno\Core\site()->config()->url . 'flickr/callback'?>" />
                     </p>
                     <p>
-                        Once you've finished, fill in the details below:
+                        Once you've finished, fill in the details below. You can then <a href="<?=\Idno\Core\site()->config()->getURL()?>settings/flickr/">connect your Flickr account</a>.
                     </p>
                 </div>
             </div>
