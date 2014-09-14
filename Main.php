@@ -5,6 +5,8 @@
         class Main extends \Idno\Common\Plugin {
 
             function registerPages() {
+                // Deauth URL
+                \Idno\Core\site()->addPageHandler('flickr/deauth','\IdnoPlugins\Flickr\Pages\Deauth',true);
                 // Register the callback URL
                     \Idno\Core\site()->addPageHandler('flickr/callback','\IdnoPlugins\Flickr\Pages\Callback',true);
                 // Register admin settings

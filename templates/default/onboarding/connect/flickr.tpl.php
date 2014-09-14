@@ -1,7 +1,11 @@
 <?php
 
     if ($flickr = \Idno\Core\site()->plugins()->get('Flickr')) {
-        $login_url = $flickr->getAuthURL();
+        if (empty(\Idno\Core\site()->session()->currentUser()->flickr)) {
+            $login_url = $flickr->getAuthURL();
+        } else {
+            $login_url = \Idno\Core\site()->config()->getURL() . 'flickr/deauth';
+        }
     }
 
 ?>
