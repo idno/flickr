@@ -25,7 +25,7 @@
 
                 \Idno\Core\site()->syndication()->registerService('flickr', function() {
                     return $this->hasFlickr();
-                }, ['image']);
+                }, array('image'));
 
                 // Push "images" to Flickr
                 \Idno\Core\site()->addEventHook('post/image/flickr',function(\Idno\Core\Event $event) {
@@ -38,7 +38,7 @@
                                     $flickrAPI->token = (\Idno\Core\site()->session()->currentUser()->flickr['access_token']);
                                     $tags = str_replace('#','',implode(' ', $object->getTags())); // Get string of non-hashtagged tags
                                     try {
-                                        $photo_id = $flickrAPI->upload($attachment['url'], $object->getTitle(), $object->getDescription() . "\n\nOriginal: " . $object->getURL(), $tags, ["is_public"=>1], 0);
+                                        $photo_id = $flickrAPI->upload($attachment['url'], $object->getTitle(), $object->getDescription() . "\n\nOriginal: " . $object->getURL(), $tags, array("is_public"=>1), 0);
                                         if (!empty($photo_id)) {
                                             $photo = $flickrAPI->photosGetInfo($photo_id);
                                         	if (!empty($photo['urls']['photopage'])) {
