@@ -21,7 +21,7 @@
                         if ($frob = $this->getInput('frob')) {
                             $result = $flickrAPI->getFrobToken($frob);
                             if (!empty($result['token'])) {
-                                $flickr = ['access_token' => $result['token']];
+                                $flickr = array('access_token' => $result['token']);
                                 \Idno\Core\site()->session()->currentUser()->flickr = $flickr;
                                 \Idno\Core\site()->session()->currentUser()->save();
                             }

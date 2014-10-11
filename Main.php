@@ -83,10 +83,10 @@
             function connect() {
                 if (!empty(\Idno\Core\site()->config()->flickr)) {
                     require_once(dirname(__FILE__) . '/external/flickr_api.php');
-                    $flickr = new \Flickr([
+                    $flickr = new \Flickr(array(
                         'api_key' => \Idno\Core\site()->config()->flickr['apiKey'],
                         'api_secret' => \Idno\Core\site()->config()->flickr['secret']
-                    ]);
+                    ));
                     if ($this->hasFlickr()) {
                         $flickr->token = \Idno\Core\site()->session()->currentUser()->flickr['access_token'];
                     }
