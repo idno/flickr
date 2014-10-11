@@ -29,7 +29,8 @@
 
                 // Push "images" to Flickr
                 \Idno\Core\site()->addEventHook('post/image/flickr',function(\Idno\Core\Event $event) {
-                    $object = $event->data()['object'];
+                    $eventdata = $event->data();
+                    $object = $eventdata['object'];
                     if ($attachments = $object->getAttachments()) {
                         foreach($attachments as $attachment) {
                             if ($this->hasFlickr()) {
