@@ -36,7 +36,7 @@
                             </p>
                             <p>
                                 <input type="hidden" name="remove" value="1" />
-                                <button type="submit" class="btn-primary">Click here to remove Flickr from your account.</button>
+                                <button type="submit" class="btn btn-large btn-primary">Click here to remove Flickr from your account.</button>
                             </p>
                         </div>
                     </div>
