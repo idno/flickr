@@ -27,6 +27,14 @@
                     return $this->hasFlickr();
                 }, array('image'));
 
+                if ($this->hasFlickr()) {
+                    if (is_array(\Idno\Core\site()->session()->currentUser()->flickr) && !array_key_exists('access_token', \Idno\Core\site()->session()->currentUser()->flickr)) {
+                        foreach(\Idno\Core\site()->session()->currentUser()->flickr as $username => $details) {
+                            \Idno\Core\site()->syndication()->registerServiceAccount('flickr', $username, 'Flickr: ' . $username);
+                        }
+                    }
+                }
+
                 // Push "images" to Flickr
                 \Idno\Core\site()->addEventHook('post/image/flickr',function(\Idno\Core\Event $event) {
                     $eventdata = $event->data();
@@ -34,7 +42,14 @@
                     if ($attachments = $object->getAttachments()) {
                         foreach($attachments as $attachment) {
                             if ($this->hasFlickr()) {
-                                if ($flickrAPI = $this->connect()) {
+                                if (!empty($eventdata['syndication_account'])) {
+                                    $flickrAPI  = $this->connect($eventdata['syndication_account']);
+                                    $user_details = \Idno\Core\site()->session()->currentUser()->flickr[$eventdata['syndication_account']];
+                                } else {
+                                    $flickrAPI  = $this->connect();
+                                    $user_details = \Idno\Core\site()->session()->currentUser()->flickr['access_token'];
+                                }
+                                if ($flickrAPI) {
                                     $flickrAPI->token = (\Idno\Core\site()->session()->currentUser()->flickr['access_token']);
                                     $tags = str_replace('#','',implode(' ', $object->getTags())); // Get string of non-hashtagged tags
                                     try {
@@ -81,7 +96,7 @@
              * Connect to Flickr
              * @return bool|\Flickr
              */
-            function connect() {
+            function connect($username = false) {
                 if (!empty(\Idno\Core\site()->config()->flickr)) {
                     require_once(dirname(__FILE__) . '/external/flickr_api.php');
                     $flickr = new \Flickr(array(
@@ -89,7 +104,11 @@
                         'api_secret' => \Idno\Core\site()->config()->flickr['secret']
                     ));
                     if ($this->hasFlickr()) {
-                        $flickr->token = \Idno\Core\site()->session()->currentUser()->flickr['access_token'];
+                        if (empty($username)) {
+                            $flickr->token = \Idno\Core\site()->session()->currentUser()->flickr['access_token'];
+                        } else {
+                            $flickr->token = \Idno\Core\site()->session()->currentUser()->flickr[$username]['access_token'];
+                        }
                     }
                     return $flickr;
                 }

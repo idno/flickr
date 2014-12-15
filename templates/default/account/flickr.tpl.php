@@ -56,7 +56,7 @@
                     </div>
                 <?php
 
-                } else {
+                } else if (!\Idno\Core\site()->config()->multipleSyndicationAccounts()) {
 
                     ?>
                     <div class="control-group">
@@ -76,6 +76,41 @@
                     </div>
 
                 <?php
+
+                } else {
+
+            ?>
+                    <div class="control-group">
+                        <div class="controls">
+                            <p class="explanation">
+                                You have connected the following accounts to Flickr:
+                            </p>
+                            <?php
+
+                                if ($accounts = \Idno\Core\site()->syndication()->getServiceAccounts('flickr')) {
+
+                                    foreach ($accounts as $account) {
+
+                                        ?>
+                                        <p>
+                                            <input type="hidden" name="remove" value="<?= $account['username'] ?>"/>
+                                            <button type="submit"
+                                                    class="btn btn-primary"><?= $account['username'] ?></button>
+                                        </p>
+                                    <?php
+
+                                    }
+
+                                }
+
+                            ?>
+                            <p>
+                                <a href="<?= $vars['login_url'] ?>" class="">Click here
+                                    to connect another SoundCloud account</a>
+                            </p>
+                        </div>
+                    </div>
+            <?php
 
                 }
             ?>
