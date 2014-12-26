@@ -23,7 +23,7 @@
                             if (!empty($result['token'])) {
 
                                 $user = \Idno\Core\site()->session()->currentUser();
-                                $user->flickr[$result['username']] = array('access_token' => $result['token'], 'username' => $result['fullname']);
+                                $user->flickr[$result['username']] = array('access_token' => $result['token'], 'username' => $result['fullname'], 'nsid' => $result['nsid']);
                                 $user->save();
 
                             }
