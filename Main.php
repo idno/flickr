@@ -79,13 +79,12 @@
             function getAuthURL() {
 
                 $flickr = $this;
+                $login_url = '';
                 if (!$flickr->hasFlickr()) {
                     if ($flickrAPI = $flickr->connect()) {
                         /* @var \Flickr $flickrAPI */
                         $login_url = $flickrAPI->getAuthUrl('write');
                     }
-                } else {
-                    $login_url = '';
                 }
 
                 return $login_url;
