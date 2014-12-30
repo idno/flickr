@@ -46,10 +46,12 @@
                             </p>
 						    </div>
 	                      </div>
+	                      <div class="social">
                             <p>
                                 <input type="hidden" name="remove" value="1" />
-                                <button type="submit" class="btn btn-large btn-primary">Disconnect Flickr.</button>
+                                <button type="submit" class="connect fl connected">Disconnect Flickr</button>
                             </p>
+	                      </div>
                         </div>
                     </div>
 
