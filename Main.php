@@ -119,6 +119,9 @@
              * @return bool
              */
             function hasFlickr() {
+                if (!\Idno\Core\site()->session()->currentUser()) {
+                    return false;
+                }
                 if (\Idno\Core\site()->session()->currentUser()->flickr) {
                     return true;
                 }
