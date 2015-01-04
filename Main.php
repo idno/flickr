@@ -80,12 +80,12 @@
 
                 $flickr = $this;
                 $login_url = '';
-                if (!$flickr->hasFlickr()) {
+                //if (!$flickr->hasFlickr()) {
                     if ($flickrAPI = $flickr->connect()) {
                         /* @var \Flickr $flickrAPI */
                         $login_url = $flickrAPI->getAuthUrl('write');
                     }
-                }
+                //}
 
                 return $login_url;
 
@@ -104,7 +104,9 @@
                     ));
                     if ($this->hasFlickr()) {
                         if (empty($username)) {
-                            $flickr->token = \Idno\Core\site()->session()->currentUser()->flickr['access_token'];
+                            if (!empty(\Idno\Core\site()->session()->currentUser()->flickr['access_token'])) {
+                                $flickr->token = \Idno\Core\site()->session()->currentUser()->flickr['access_token'];
+                            }
                         } else {
                             $flickr->token = \Idno\Core\site()->session()->currentUser()->flickr[$username]['access_token'];
                         }
