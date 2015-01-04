@@ -26,18 +26,18 @@
                     </p>
                 <label class="control-label" for="name">API Key</label>
                 <div class="controls">
-                    <input type="text" id="name" placeholder="API Key" class="span4" name="apiKey" value="<?=htmlspecialchars(\Idno\Core\site()->config()->flickr['apiKey'])?>" >
+                    <input type="text" id="name" placeholder="API Key" class="span6" name="apiKey" value="<?=htmlspecialchars(\Idno\Core\site()->config()->flickr['apiKey'])?>" >
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="name">App secret</label>
                 <div class="controls">
-                    <input type="text" id="name" placeholder="App secret" class="span4" name="secret" value="<?=htmlspecialchars(\Idno\Core\site()->config()->flickr['secret'])?>" >
+                    <input type="text" id="name" placeholder="App secret" class="span6" name="secret" value="<?=htmlspecialchars(\Idno\Core\site()->config()->flickr['secret'])?>" >
                 </div>
             </div>
           <div class="control-group">
 	          <p>
-                        After the Flickr application is configured, you must enable it under Plugins.
+                        After the Flickr application is configured, you must connect under account Settings.
                     </p>
 
           </div> 

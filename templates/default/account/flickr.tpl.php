@@ -24,7 +24,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="social span4">
+                            <div class="social span6">
                                 <p>
                                     <a href="<?= $vars['login_url'] ?>" class="connect fl">Connect Flickr</a>
                                 </p>
@@ -72,8 +72,6 @@
                                         post here
                                         can be shared with your Flickr accounts.
                                     </p>
-                                </div>
-                            </div>
                             <?php
 
                                 if ($accounts = \Idno\Core\site()->syndication()->getServiceAccounts('flickr')) {
@@ -81,6 +79,7 @@
                                     foreach ($accounts as $account) {
 
                                         ?>
+									<div class="social">
                                         <form action="<?=\Idno\Core\site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
                                             <p>
                                                 <input type="hidden" name="remove" value="<?= $account['username'] ?>"/>
@@ -96,6 +95,7 @@
                                 } else {
 
                                     ?>
+									</div>
                                     <div class="social">
                                         <form action="<?=\Idno\Core\site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
                                             <p>
@@ -104,16 +104,18 @@
                                                 <?= \Idno\Core\site()->actions()->signForm('/flickr/deauth/') ?>
                                             </p>
                                         </form>
-                                    </div>
                                     <?php
 
                                 }
 
                             ?>
+                        </div>
                             <p>
-                                <a href="<?= $vars['login_url'] ?>" class="">Click here
+                                <a href="<?= $vars['login_url'] ?>" class=""><icon class="icon-plus"></icon> Click here
                                     to connect another Flickr account</a>
                             </p>
+                        </div>
+                    </div>
                         </div>
                     </div>
                 <?php
