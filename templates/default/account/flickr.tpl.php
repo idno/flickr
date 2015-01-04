@@ -8,7 +8,6 @@
 </div>
 <div class="row">
     <div class="span10 offset1">
-        <form action="<?=\Idno\Core\site()->config()->getDisplayURL()?>account/flickr/" class="form-horizontal" method="post">
             <?php
                 if (empty(\Idno\Core\site()->session()->currentUser()->flickr)) {
                     ?>
@@ -48,10 +47,13 @@
                                 </div>
                             </div>
                             <div class="social">
-                                <p>
-                                    <input type="hidden" name="remove" value="1"/>
-                                    <button type="submit" class="connect fl connected">Disconnect Flickr</button>
-                                </p>
+                                <form action="<?=\Idno\Core\site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
+                                    <p>
+                                        <input type="hidden" name="remove" value="1"/>
+                                        <button type="submit" class="connect fl connected">Disconnect Flickr</button>
+                                        <?= \Idno\Core\site()->actions()->signForm('/flickr/deauth/') ?>
+                                    </p>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -79,14 +81,31 @@
                                     foreach ($accounts as $account) {
 
                                         ?>
-                                        <p>
-                                            <input type="hidden" name="remove" value="<?= $account['username'] ?>"/>
-                                            <button type="submit"
-                                                    class="connect fl connected"><?= $account['username'] ?></button>
-                                        </p>
+                                        <form action="<?=\Idno\Core\site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
+                                            <p>
+                                                <input type="hidden" name="remove" value="<?= $account['username'] ?>"/>
+                                                <button type="submit"
+                                                        class="connect fl connected"><?= $account['username'] ?></button>
+                                                <?= \Idno\Core\site()->actions()->signForm('/flickr/deauth/') ?>
+                                            </p>
+                                        </form>
                                     <?php
 
                                     }
+
+                                } else {
+
+                                    ?>
+                                    <div class="social">
+                                        <form action="<?=\Idno\Core\site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
+                                            <p>
+                                                <input type="hidden" name="remove" value="1"/>
+                                                <button type="submit" class="connect fl connected">Disconnect Flickr</button>
+                                                <?= \Idno\Core\site()->actions()->signForm('/flickr/deauth/') ?>
+                                            </p>
+                                        </form>
+                                    </div>
+                                    <?php
 
                                 }
 
@@ -101,7 +120,5 @@
 
                 }
             ?>
-            <?= \Idno\Core\site()->actions()->signForm('/account/flickr/') ?>
-        </form>
     </div>
 </div>
