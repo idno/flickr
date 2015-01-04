@@ -85,7 +85,7 @@
                                             <p>
                                                 <input type="hidden" name="remove" value="<?= $account['username'] ?>"/>
                                                 <button type="submit"
-                                                        class="connect fl connected"><?= $account['username'] ?></button>
+                                                        class="connect fl connected"><?= $account['username'] ?> (Disconnect)</button>
                                                 <?= \Idno\Core\site()->actions()->signForm('/flickr/deauth/') ?>
                                             </p>
                                         </form>
