@@ -31,7 +31,7 @@
                     $user->save();
                     \Idno\Core\site()->session()->addMessage('Your Flickr settings have been removed from your account.');
                 }
-                $this->forward('/account/flickr/');
+                $this->forward(\Idno\Core\site()->config()->getDisplayURL() . 'account/flickr/');
             }
 
         }

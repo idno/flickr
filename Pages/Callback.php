@@ -23,7 +23,7 @@
                             if (!empty($result['token'])) {
 
                                 $user = \Idno\Core\site()->session()->currentUser();
-                                $user->flickr[$result['username']] = array('access_token' => $result['token'], 'username' => $result['fullname'], 'nsid' => $result['nsid']);
+                                $user->flickr[$result['username']] = array('access_token' => $result['token'], 'username' => $result['fullname']);
                                 $user->save();
 
                             }
@@ -34,7 +34,7 @@
                     unset($_SESSION['onboarding_passthrough']);
                     $this->forward(\Idno\Core\site()->config()->getURL() . 'begin/connect-forwarder');
                 }
-                $this->forward('/account/flickr/');
+                $this->forward(\Idno\Core\site()->config()->getDisplayURL() . 'account/flickr/');
             }
 
         }
