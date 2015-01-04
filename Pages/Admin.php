@@ -30,7 +30,7 @@
                 );
                 \Idno\Core\site()->config()->save();
                 \Idno\Core\site()->session()->addMessage('Your Flickr application details were saved.');
-                $this->forward('/admin/flickr/');
+                $this->forward(\Idno\Core\site()->config()->getDisplayURL() . 'admin/flickr/');
             }
 
         }
