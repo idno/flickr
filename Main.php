@@ -6,7 +6,7 @@
 
             function registerPages() {
                 // Deauth URL
-                \Idno\Core\site()->addPageHandler('flickr/deauth','\IdnoPlugins\Flickr\Pages\Deauth',true);
+                    \Idno\Core\site()->addPageHandler('flickr/deauth','\IdnoPlugins\Flickr\Pages\Deauth',true);
                 // Register the callback URL
                     \Idno\Core\site()->addPageHandler('flickr/callback','\IdnoPlugins\Flickr\Pages\Callback',true);
                 // Register admin settings
@@ -30,7 +30,7 @@
                 if ($this->hasFlickr()) {
                     if (is_array(\Idno\Core\site()->session()->currentUser()->flickr) && !array_key_exists('access_token', \Idno\Core\site()->session()->currentUser()->flickr)) {
                         foreach(\Idno\Core\site()->session()->currentUser()->flickr as $username => $details) {
-                            \Idno\Core\site()->syndication()->registerServiceAccount('flickr', $username, 'Flickr: ' . $username);
+                            \Idno\Core\site()->syndication()->registerServiceAccount('flickr', $username, $username);
                         }
                     }
                 }
@@ -47,10 +47,9 @@
                                     $user_details = \Idno\Core\site()->session()->currentUser()->flickr[$eventdata['syndication_account']];
                                 } else {
                                     $flickrAPI  = $this->connect();
-                                    $user_details = \Idno\Core\site()->session()->currentUser()->flickr['access_token'];
+                                    $user_details = \Idno\Core\site()->session()->currentUser()->flickr;
                                 }
-                                if ($flickrAPI) {
-                                    $flickrAPI->token = (\Idno\Core\site()->session()->currentUser()->flickr['access_token']);
+                                if ($flickrAPI && !empty($user_details)) {
                                     $tags = str_replace('#','',implode(' ', $object->getTags())); // Get string of non-hashtagged tags
                                     try {
                                         $photo_id = $flickrAPI->upload($attachment['url'], $object->getTitle(), $object->getDescription() . "\n\nOriginal: " . $object->getURL(), $tags, array("is_public"=>1), 0);
