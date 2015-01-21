@@ -88,6 +88,7 @@
                                                 <?= \Idno\Core\site()->actions()->signForm('/flickr/deauth/') ?>
                                             </p>
                                         </form>
+                                        </div>
                                     <?php
 
                                     }
@@ -95,7 +96,7 @@
                                 } else {
 
                                     ?>
-									</div>
+									
                                     <div class="social">
                                         <form action="<?=\Idno\Core\site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
                                             <p>
@@ -104,12 +105,13 @@
                                                 <?= \Idno\Core\site()->actions()->signForm('/flickr/deauth/') ?>
                                             </p>
                                         </form>
+                                        </div>
                                     <?php
 
                                 }
 
                             ?>
-                        </div>
+                        
                             <p>
                                 <a href="<?= $vars['login_url'] ?>" class=""><icon class="icon-plus"></icon> Click here
                                     to connect another Flickr account</a>
