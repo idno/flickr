@@ -49,6 +49,11 @@
                                     $flickrAPI  = $this->connect();
                                     $user_details = \Idno\Core\site()->session()->currentUser()->flickr;
                                 }
+                                if (!empty($user_details['name'])) {
+                                    $name = $user_details['name'];
+                                } else {
+                                    $name = 'Flickr';
+                                }
                                 if ($flickrAPI && !empty($user_details)) {
                                     $tags = str_replace('#','',implode(' ', $object->getTags())); // Get string of non-hashtagged tags
                                     try {
@@ -56,7 +61,7 @@
                                         if (!empty($photo_id)) {
                                             $photo = $flickrAPI->photosGetInfo($photo_id);
                                         	if (!empty($photo['urls']['photopage'])) {
-                                        		$object->setPosseLink('flickr',$photo['urls']['photopage']);
+                                        		$object->setPosseLink('flickr',$photo['urls']['photopage'], $name);
                                         		$object->save();
                                         	}
                                         }
