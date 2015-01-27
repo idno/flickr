@@ -23,6 +23,8 @@
                             } else {
                                 $user->flickr = false;
                             }
+                        } else {
+                            $user->flickr = false;
                         }
                         $user->save();
                         \Idno\Core\site()->session()->refreshSessionUser($user);
