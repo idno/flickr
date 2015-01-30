@@ -28,9 +28,14 @@
                 }, array('image'));
 
                 if ($this->hasFlickr()) {
-                    if (is_array(\Idno\Core\site()->session()->currentUser()->flickr) && !array_key_exists('access_token', \Idno\Core\site()->session()->currentUser()->flickr)) {
+                    if (is_array(\Idno\Core\site()->session()->currentUser()->flickr)) {
                         foreach(\Idno\Core\site()->session()->currentUser()->flickr as $username => $details) {
-                            \Idno\Core\site()->syndication()->registerServiceAccount('flickr', $username, $username);
+                            if (!in_array($username, ['access_token','username'])) {
+                                \Idno\Core\site()->syndication()->registerServiceAccount('flickr', $username, $username);
+                            }
+                        }
+                        if (!empty(\Idno\Core\site()->session()->currentUser()->flickr['username'])) {
+                            \Idno\Core\site()->syndication()->registerServiceAccount('flickr', \Idno\Core\site()->session()->currentUser()->flickr['username'], \Idno\Core\site()->session()->currentUser()->flickr['username']);
                         }
                     }
                 }
@@ -112,7 +117,13 @@
                                 $flickr->token = \Idno\Core\site()->session()->currentUser()->flickr['access_token'];
                             }
                         } else {
-                            $flickr->token = \Idno\Core\site()->session()->currentUser()->flickr[$username]['access_token'];
+                            if (!empty(
+                                \Idno\Core\site()->session()->currentUser()->flickr[$username]
+                            )) {
+                                $flickr->token = \Idno\Core\site()->session()->currentUser()->flickr[$username]['access_token'];
+                            } else if (!empty(\Idno\Core\site()->session()->currentUser()->flickr['username']) && $username == \Idno\Core\site()->session()->currentUser()->flickr['username']) {
+                                $flickr->token = \Idno\Core\site()->session()->currentUser()->flickr['access_token'];
+                            }
                         }
                     }
                     return $flickr;
