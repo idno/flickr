@@ -1,47 +1,41 @@
 <div class="row">
 
-    <div class="span10 offset1">
+    <div class="col-md-10 col-md-offset-1">
 	            <?=$this->draw('admin/menu')?>
         <h1>Flickr configuration</h1>
     </div>
 
 </div>
 <div class="row">
-    <div class="span10 offset1">
+    <div class="col-md-10 col-md-offset-1">
         <form action="<?=\Idno\Core\site()->config()->getURL()?>admin/flickr/" class="form-horizontal" method="post">
-            <div class="control-group">
+            <div class="controls-group">
                 <div class="controls-config">
                     <p>
                         To begin using Flickr, <a href="http://www.flickr.com/services/apps/" target="_blank">create a new application in
                             the Flickr apps portal</a>.</p>
                     <p>
                         You need to edit the authentication flow and set the callback URL to:<br />
-                        <input type="text" class="span4" value="<?=\Idno\Core\site()->config()->url . 'flickr/callback'?>" />
+                        <input type="text" class="form-control" value="<?=\Idno\Core\site()->config()->url . 'flickr/callback'?>" />
                     </p>
                 </div>
             </div>
-            <div class="control-group">
+            <div class="controls-group">
 	                <p>
                         Once you've finished, fill in the details below. You can then <a href="<?=\Idno\Core\site()->config()->getURL()?>account/flickr/">connect your Flickr account</a>.
                     </p>
                 <label class="control-label" for="name">API Key</label>
-                <div class="controls">
-                    <input type="text" id="name" placeholder="API Key" class="span6" name="apiKey" value="<?=htmlspecialchars(\Idno\Core\site()->config()->flickr['apiKey'])?>" >
-                </div>
-            </div>
-            <div class="control-group">
+                    <input type="text" id="name" placeholder="API Key" class="form-control" name="apiKey" value="<?=htmlspecialchars(\Idno\Core\site()->config()->flickr['apiKey'])?>" >
                 <label class="control-label" for="name">App secret</label>
-                <div class="controls">
-                    <input type="text" id="name" placeholder="App secret" class="span6" name="secret" value="<?=htmlspecialchars(\Idno\Core\site()->config()->flickr['secret'])?>" >
-                </div>
+                    <input type="text" id="name" placeholder="App secret" class="form-control" name="secret" value="<?=htmlspecialchars(\Idno\Core\site()->config()->flickr['secret'])?>" >
             </div>
-          <div class="control-group">
+          <div class="controls-group">
 	          <p>
-                        After the Flickr application is configured, you must connect under account Settings.
+                        After the Flickr application is configured, site users must authenticate their Flickr account under Settings. 
                     </p>
 
           </div> 
-            <div class="control-group">
+            <div class="controls-group">
                 <div class="controls-save">
                     <button type="submit" class="btn btn-primary">Save settings</button>
                 </div>

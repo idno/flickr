@@ -1,20 +1,20 @@
 <div class="row">
 
-    <div class="span10 offset1">
+    <div class="col-md-10 col-md-offset-1">
         <?= $this->draw('account/menu') ?>
         <h1>Flickr</h1>
     </div>
 
 </div>
 <div class="row">
-    <div class="span10 offset1">
+    <div class="col-md-10 col-md-offset-1">
             <?php
                 if (empty(\Idno\Core\site()->session()->currentUser()->flickr)) {
                     ?>
                     <div class="control-group">
                         <div class="controls-config">
                             <div class="row">
-                                <div class="span6">
+                                <div class="col-md-7">
                                     <p>
                                         Easily share pictures to Flickr.</p>
 
@@ -22,13 +22,14 @@
                                         With Flickr connected, you can cross-post images that you publish publicly on
                                         your site.
                                     </p>
-                                </div>
-                            </div>
-                            <div class="social span6">
+
+                            <div class="social">
                                 <p>
-                                    <a href="<?= $vars['login_url'] ?>" class="connect fl">Connect Flickr</a>
+                                    <a href="<?= $vars['login_url'] ?>" class="connect fl"><i class="fa fa-flickr"></i> Connect Flickr</a>
                                 </p>
                             </div>
+                        </div>
+                    </div>
                         </div>
                     </div>
                 <?php
@@ -39,22 +40,23 @@
                     <div class="control-group">
                         <div class="controls-config">
                             <div class="row">
-                                <div class="span6">
+                                <div class="col-md-7">
                                     <p>
                                         Your account is currently connected to Flickr. Public content that you post here
                                         can be shared with your Flickr account.
                                     </p>
-                                </div>
-                            </div>
-                            <div class="social">
-                                <form action="<?=\Idno\Core\site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
-                                    <p>
+
+									<div class="social">
+										<form action="<?=\Idno\Core\site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
+										<p>
                                         <input type="hidden" name="remove" value="1"/>
-                                        <button type="submit" class="connect fl connected">Disconnect Flickr</button>
+                                        <button type="submit" class="connect fl connected"><i class="fa fa-flickr"></i> Disconnect Flickr</button>
                                         <?= \Idno\Core\site()->actions()->signForm('/flickr/deauth/') ?>
-                                    </p>
-                                </form>
-                            </div>
+                                    	</p>
+                                		</form>
+                            		</div>
+                        		</div>
+                    		</div>
                         </div>
                     </div>
 
@@ -66,7 +68,7 @@
                     <div class="control-group">
                         <div class="controls-config">
                             <div class="row">
-                                <div class="span6">
+                                <div class="col-md-7">
                                     <p>
                                         You have connected the following accounts to Flickr. Public content that you
                                         post here
@@ -84,7 +86,7 @@
                                             <p>
                                                 <input type="hidden" name="remove" value="<?= $account['username'] ?>"/>
                                                 <button type="submit"
-                                                        class="connect fl connected"><?= $account['username'] ?> (Disconnect)</button>
+                                                        class="connect fl connected"><i class="fa fa-flickr"></i> <?= $account['username'] ?> (Disconnect)</button>
                                                 <?= \Idno\Core\site()->actions()->signForm('/flickr/deauth/') ?>
                                             </p>
                                         </form>
@@ -101,7 +103,7 @@
                                         <form action="<?=\Idno\Core\site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
                                             <p>
                                                 <input type="hidden" name="remove" value="1"/>
-                                                <button type="submit" class="connect fl connected">Disconnect Flickr</button>
+                                                <button type="submit" class="connect fl connected"><i class="fa fa-flickr"></i> Disconnect Flickr</button>
                                                 <?= \Idno\Core\site()->actions()->signForm('/flickr/deauth/') ?>
                                             </p>
                                         </form>
@@ -112,10 +114,9 @@
 
                             ?>
                         
-                            <p>
-                                <a href="<?= $vars['login_url'] ?>" class=""><icon class="icon-plus"></icon> Click here
-                                    to connect another Flickr account</a>
-                            </p>
+                          <p>
+                                        <a href="<?= $vars['oauth_url'] ?>" class=""><i class="fa fa-plus"></i> Add another Flickr account</a>
+                                    </p>
                         </div>
                     </div>
                         </div>
