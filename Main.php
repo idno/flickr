@@ -32,7 +32,7 @@
                         if (is_array(\Idno\Core\site()->session()->currentUser()->flickr)) {
                             foreach(\Idno\Core\site()->session()->currentUser()->flickr as $username => $details) {
                                 if (!in_array($username, ['access_token','username'])) {
-                                    \Idno\Core\site()->syndication()->registerServiceAccount('flickr', $username, $username);
+                                    \Idno\Core\site()->syndication()->registerServiceAccount('flickr', $username, $details['username']);
                                 }
                             }
                             if (!empty(\Idno\Core\site()->session()->currentUser()->flickr['username'])) {
@@ -57,8 +57,8 @@
                                     $user_details = \Idno\Core\site()->session()->currentUser()->flickr;
                                 }
 
-                                if (!empty($user_details['name'])) {
-                                    $name = $user_details['name'];
+                                if (!empty($user_details['username'])) {
+                                    $name = $user_details['username'];
                                 } else {
                                     $name = 'Flickr';
                                 }
