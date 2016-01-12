@@ -9,7 +9,7 @@
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
             <?php
-                if (empty(\Idno\Core\site()->session()->currentUser()->flickr)) {
+                if (empty(\Idno\Core\Idno::site()->session()->currentUser()->flickr)) {
                     ?>
                     <div class="control-group">
                         <div class="controls-config">
@@ -34,7 +34,7 @@
                     </div>
                 <?php
 
-                } else if (!\Idno\Core\site()->config()->multipleSyndicationAccounts()) {
+                } else if (!\Idno\Core\Idno::site()->config()->multipleSyndicationAccounts()) {
 
                     ?>
                     <div class="control-group">
@@ -47,11 +47,11 @@
                                     </p>
 
 									<div class="social">
-										<form action="<?=\Idno\Core\site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
+										<form action="<?=\Idno\Core\Idno::site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
 										<p>
                                         <input type="hidden" name="remove" value="1"/>
                                         <button type="submit" class="connect fl connected"><i class="fa fa-flickr"></i> Disconnect Flickr</button>
-                                        <?= \Idno\Core\site()->actions()->signForm('/flickr/deauth/') ?>
+                                        <?= \Idno\Core\Idno::site()->actions()->signForm('/flickr/deauth/') ?>
                                     	</p>
                                 		</form>
                             		</div>
@@ -76,18 +76,18 @@
                                     </p>
                             <?php
 
-                                if ($accounts = \Idno\Core\site()->syndication()->getServiceAccounts('flickr')) {
+                                if ($accounts = \Idno\Core\Idno::site()->syndication()->getServiceAccounts('flickr')) {
 
                                     foreach ($accounts as $account) {
 
                                         ?>
 									<div class="social">
-                                        <form action="<?=\Idno\Core\site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
+                                        <form action="<?=\Idno\Core\Idno::site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
                                             <p>
                                                 <input type="hidden" name="remove" value="<?= $account['username'] ?>"/>
                                                 <button type="submit"
                                                         class="connect fl connected"><i class="fa fa-flickr"></i> <?= $account['username'] ?> (Disconnect)</button>
-                                                <?= \Idno\Core\site()->actions()->signForm('/flickr/deauth/') ?>
+                                                <?= \Idno\Core\Idno::site()->actions()->signForm('/flickr/deauth/') ?>
                                             </p>
                                         </form>
                                         </div>
@@ -98,13 +98,13 @@
                                 } else {
 
                                     ?>
-									
+
                                     <div class="social">
-                                        <form action="<?=\Idno\Core\site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
+                                        <form action="<?=\Idno\Core\Idno::site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
                                             <p>
                                                 <input type="hidden" name="remove" value="1"/>
                                                 <button type="submit" class="connect fl connected"><i class="fa fa-flickr"></i> Disconnect Flickr</button>
-                                                <?= \Idno\Core\site()->actions()->signForm('/flickr/deauth/') ?>
+                                                <?= \Idno\Core\Idno::site()->actions()->signForm('/flickr/deauth/') ?>
                                             </p>
                                         </form>
                                         </div>
@@ -113,7 +113,7 @@
                                 }
 
                             ?>
-                        
+
                           <p>
                                         <a href="<?= $vars['oauth_url'] ?>" class=""><i class="fa fa-plus"></i> Add another Flickr account</a>
                                     </p>
