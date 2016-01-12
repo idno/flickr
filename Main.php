@@ -27,18 +27,20 @@
                     return $this->hasFlickr();
                 }, array('image'));
 
-                if ($this->hasFlickr()) {
-                    if (is_array(\Idno\Core\site()->session()->currentUser()->flickr)) {
-                        foreach(\Idno\Core\site()->session()->currentUser()->flickr as $username => $details) {
-                            if (!in_array($username, ['access_token','username'])) {
-                                \Idno\Core\site()->syndication()->registerServiceAccount('flickr', $username, $username);
+                \Idno\Core\site()->addEventHook('user/auth/success', function(\Idno\Core\Event $event) {
+                    if ($this->hasFlickr()) {
+                        if (is_array(\Idno\Core\site()->session()->currentUser()->flickr)) {
+                            foreach(\Idno\Core\site()->session()->currentUser()->flickr as $username => $details) {
+                                if (!in_array($username, ['access_token','username'])) {
+                                    \Idno\Core\site()->syndication()->registerServiceAccount('flickr', $username, $username);
+                                }
+                            }
+                            if (!empty(\Idno\Core\site()->session()->currentUser()->flickr['username'])) {
+                                \Idno\Core\site()->syndication()->registerServiceAccount('flickr', \Idno\Core\site()->session()->currentUser()->flickr['username'], \Idno\Core\site()->session()->currentUser()->flickr['username']);
                             }
                         }
-                        if (!empty(\Idno\Core\site()->session()->currentUser()->flickr['username'])) {
-                            \Idno\Core\site()->syndication()->registerServiceAccount('flickr', \Idno\Core\site()->session()->currentUser()->flickr['username'], \Idno\Core\site()->session()->currentUser()->flickr['username']);
-                        }
                     }
-                }
+                });
 
                 // Push "images" to Flickr
                 \Idno\Core\site()->addEventHook('post/image/flickr',function(\Idno\Core\Event $event) {
@@ -54,12 +56,20 @@
                                     $flickrAPI  = $this->connect();
                                     $user_details = \Idno\Core\site()->session()->currentUser()->flickr;
                                 }
+
                                 if (!empty($user_details['name'])) {
                                     $name = $user_details['name'];
                                 } else {
                                     $name = 'Flickr';
                                 }
-                                if ($flickrAPI && !empty($user_details)) {
+
+                                if (!$flickrAPI) {
+                                    error_log('Failed to connect to Flickr API');
+                                }
+                                else if (empty($user_details)) {
+                                    error_log('Failed to get user_details');
+                                }
+                                else {
                                     $tags = str_replace('#','',implode(' ', $object->getTags())); // Get string of non-hashtagged tags
                                     try {
                                         $photo_id = $flickrAPI->upload($attachment['url'], $object->getTitle(), $object->getDescription() . "\n\nOriginal: " . $object->getURL(), $tags, array("is_public"=>1), 0);
@@ -69,6 +79,9 @@
                                         		$object->setPosseLink('flickr',$photo['urls']['photopage'], $name);
                                         		$object->save();
                                         	}
+                                        }
+                                        else {
+                                            error_log("Failed to upload image to Flickr. code={$flickrAPI->getErrorCode()}, error={$flickrAPI->getErrorMessage()}");
                                         }
                                     }
                                     catch (\FlickrApiException $e) {

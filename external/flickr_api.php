@@ -1,6 +1,6 @@
 <?php
 //
-// PHP5 Flickr_API 
+// PHP5 Flickr_API
 // Should be mostly API compatible with Cal Henderson's PEAR::Flickr_API
 // but uses Curl and SimpleXML
 //
@@ -42,7 +42,11 @@
             $params['api_sig'] = $this->signArgs($params);
 
             if($method=='upload') {
-                $params['photo'] = '@'.$photo;
+                if(version_compare(phpversion(), '5.5', '>=')) {
+                    $params['photo'] = new \CURLFile($photo);
+                } else {
+                    $params['photo'] = '@'.$photo;
+                }
                 curl_setopt($req, CURLOPT_URL, $this->_cfg['upload_endpoint']);
                 curl_setopt($req, CURLOPT_TIMEOUT, 0);
 #            curl_setopt($req, CURLOPT_INFILESIZE, filesize($photo));
@@ -501,7 +505,7 @@
                     if($typed) $ret[(string)$k][$id] = (string)$vv;
                     else $ret[(string)$k][$id]['text'] = (string)$vv;
                 }
-                if(!count($ret[(string)$k])) $ret[(string)$k] = (string)$v;
+                if(!isset($ret[(string)$k])) $ret[(string)$k] = (string)$v;
             }
             return $ret;
         }
