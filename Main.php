@@ -72,7 +72,7 @@
                                 else {
                                     $tags = str_replace('#','',implode(' ', $object->getTags())); // Get string of non-hashtagged tags
                                     try {
-                                        $photo_id = $flickrAPI->upload($attachment['url'], $object->getTitle(), $object->getDescription() . "\n\nOriginal: " . $object->getURL(), $tags, array("is_public"=>1), 0);
+                                        $photo_id = $flickrAPI->upload($attachment['url'], html_entity_decode($object->getTitle()), html_entity_decode($object->getDescription()) . "\n\nOriginal: " . $object->getURL(), $tags, array("is_public"=>1), 0);
                                         if (!empty($photo_id)) {
                                             $photo = $flickrAPI->photosGetInfo($photo_id);
                                         	if (!empty($photo['urls']['photopage'])) {
