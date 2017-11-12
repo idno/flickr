@@ -100,15 +100,7 @@
              */
             function getAuthURL() {
 
-                $flickr = $this;
-                $login_url = '';
-                //if (!$flickr->hasFlickr()) {
-                    if ($flickrAPI = $flickr->connect()) {
-                        /* @var \Flickr $flickrAPI */
-                        $login_url = $flickrAPI->getAuthUrl('write');
-                    }
-                //}
-
+                $login_url = \Idno\Core\Idno::site()->config()->getURL() . 'flickr/callback';
                 return $login_url;
 
             }
@@ -120,6 +112,7 @@
             function connect($username = false) {
                 if (!empty(\Idno\Core\Idno::site()->config()->flickr)) {
                     require_once(dirname(__FILE__) . '/external/flickr_api.php');
+                    require_once(dirname(__FILE__) . '/external/DPZ/Flickr.php');
                     $flickr = new \Flickr(array(
                         'api_key' => \Idno\Core\Idno::site()->config()->flickr['apiKey'],
                         'api_secret' => \Idno\Core\Idno::site()->config()->flickr['secret']
