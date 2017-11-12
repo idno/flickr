@@ -1,7 +1,7 @@
-Flickr for idno
-===============
+Flickr for idno's Known
+=======================
 
-This plugin provides OAuthed Flickr POSSE support for idno.
+This plugin provides OAuthed Flickr POSSE support for idno's Known.
 
 Installation
 ------------
