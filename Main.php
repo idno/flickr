@@ -89,43 +89,26 @@
                                             } else {
                                                 $params['photo'] = '@'.$filename;
                                             }
-/*
-                                        $url = parse_url($photo);
-                                        if(isset($url['scheme'])) {
-                                            $stream = fopen($photo,'r');
-                                            $tmpf = tempnam('/var/tmp','G2F');
-                                            file_put_contents($tmpf, $stream);
-                                            fclose($stream);
-                                            $params['photo'] = $tmpf;
-                                        } else $params['photo'] = $photo;
-*/
-                                        $info = filesize($params['photo']);
-                                        if($title)       $params['title']       = $title;
-                                        if($description) $params['description'] = $description;
-                                        if($tags)        $params['tags']        = $tags;  // Space-separated string
-                                        if($perms) {
-                                            if(isset($perms['is_public'])) $params['is_public'] = $perms['is_public'];
-                                            if(isset($perms['is_friend'])) $params['is_friend'] = $perms['is_friend'];
-                                            if(isset($perms['is_family'])) $params['is_family'] = $perms['is_family'];
-                                        }
-/*
-                                        $photo_file = $params['photo'];
 
-                                        if(version_compare(phpversion(), '5.5', '>=')) {
-                                            $params['photo'] = new \CURLFile($photo_file);
-                                        } else {
-                                            $params['photo'] = '@'.$photo_file;
-                                        }
-*/
-                                        if($async)       $params['async']       = $async;
+                                            $info = filesize($params['photo']);
+                                            if($title)       $params['title']       = $title;
+                                            if($description) $params['description'] = $description;
+                                            if($tags)        $params['tags']        = $tags;  // Space-separated string
+                                            if($perms) {
+                                                if(isset($perms['is_public'])) $params['is_public'] = $perms['is_public'];
+                                                if(isset($perms['is_friend'])) $params['is_friend'] = $perms['is_friend'];
+                                                if(isset($perms['is_family'])) $params['is_family'] = $perms['is_family'];
+                                            }
 
-                                        $photo_id = $flickrAPI->upload($params);
+                                            if($async)       $params['async']       = $async;
 
-                                        $ok = @$photo_id['stat'];
+                                            $photo_id = $flickrAPI->upload($params);
 
-                                        if ($ok == 'ok') {
-                                            $photo = $flickrAPI->call('flickr.photos.getInfo',
-                                                                       array('photo_id' => $photo_id['photoid']['_content']));
+                                            $ok = @$photo_id['stat'];
+
+                                            if ($ok == 'ok') {
+                                                $photo = $flickrAPI->call('flickr.photos.getInfo',
+                                                                          array('photo_id' => $photo_id['photoid']['_content']));
 
                                             if ($photo['photo']['urls']['url'][0]['type'] == 'photopage') {
                                                 $object->setPosseLink('flickr',$photo['photo']['urls']['url'][0]['_content'], $name);
@@ -138,7 +121,7 @@
                                         }
 
                                         }
-/**/
+
                                     }
                                     catch (\Exception $e) { // General Exception
                                         error_log('Could not post image to Flickr: ' . $e->getMessage());
