@@ -79,54 +79,51 @@
                                         $perms = array("is_public"=>1);
                                         $description = html_entity_decode($object->getDescription()) . "\n\nOriginal: " . $object->getURL();
 
-                                        $url = parse_url($photo);
-                                        if(isset($url['scheme'])) {
-                                            $stream = fopen($photo,'r');
-                                            $tmpf = tempnam('/var/tmp','G2F');
-                                            file_put_contents($tmpf, $stream);
-                                            fclose($stream);
-                                            $params['photo'] = $tmpf;
-                                        } else $params['photo'] = $photo;
+                                        if ($bytes = \Idno\Entities\File::getFileDataFromAttachment($attachment)) {
+                                            $media = array();
+                                            $filename = tempnam(sys_get_temp_dir(), 'idnoflickr');
+                                            file_put_contents($filename, $bytes);
 
-                                        $info = filesize($params['photo']);
-                                        if($title)       $params['title']       = $title;
-                                        if($description) $params['description'] = $description;
-                                        if($tags)        $params['tags']        = $tags;  // Space-separated string
-                                        if($perms) {
-                                            if(isset($perms['is_public'])) $params['is_public'] = $perms['is_public'];
-                                            if(isset($perms['is_friend'])) $params['is_friend'] = $perms['is_friend'];
-                                            if(isset($perms['is_family'])) $params['is_family'] = $perms['is_family'];
-                                        }
+                                            if(version_compare(phpversion(), '5.5', '>=')) {
+                                                $params['photo'] = new \CURLFile($filename);
+                                            } else {
+                                                $params['photo'] = '@'.$filename;
+                                            }
 
-                                        $photo_file = $params['photo'];
+                                            $info = filesize($params['photo']);
+                                            if($title)       $params['title']       = $title;
+                                            if($description) $params['description'] = $description;
+                                            if($tags)        $params['tags']        = $tags;  // Space-separated string
+                                            if($perms) {
+                                                if(isset($perms['is_public'])) $params['is_public'] = $perms['is_public'];
+                                                if(isset($perms['is_friend'])) $params['is_friend'] = $perms['is_friend'];
+                                                if(isset($perms['is_family'])) $params['is_family'] = $perms['is_family'];
+                                            }
 
-                                        if(version_compare(phpversion(), '5.5', '>=')) {
-                                            $params['photo'] = new \CURLFile($photo_file);
-                                        } else {
-                                            $params['photo'] = '@'.$photo_file;
-                                        }
+                                            if($async)       $params['async']       = $async;
 
-                                        if($async)       $params['async']       = $async;
+                                            $photo_id = $flickrAPI->upload($params);
 
-                                        $photo_id = $flickrAPI->upload($params);
+                                            $ok = @$photo_id['stat'];
 
-                                        $ok = @$photo_id['stat'];
+                                            if ($ok == 'ok') {
+                                                $photo = $flickrAPI->call('flickr.photos.getInfo',
+                                                                          array('photo_id' => $photo_id['photoid']['_content']));
 
-                                        if ($ok == 'ok') {
-                                            $photo = $flickrAPI->call('flickr.photos.getInfo',
-                                                                       array('photo_id' => $photo_id['photoid']['_content']));
-
-                                        	if ($photo['photo']['urls']['url'][0]['type'] == 'photopage') {
-                                        		$object->setPosseLink('flickr',$photo['photo']['urls']['url'][0]['_content'], $name);
-                                        		$object->save();
-                                        	}
+                                            if ($photo['photo']['urls']['url'][0]['type'] == 'photopage') {
+                                                $object->setPosseLink('flickr',$photo['photo']['urls']['url'][0]['_content'], $name);
+                                                $object->save();
+                                            }
                                             \Idno\Core\Idno::site()->logging()->log($photo_id['photoid']['_content'] . ' pushed to Flickr.');
                                         }
                                         else {
                                             error_log("Failed to upload image to Flickr. code={$flickrAPI->getErrorCode()}, error={$flickrAPI->getErrorMessage()}");
                                         }
+
+                                        }
+
                                     }
-                                    catch (\FlickrApiException $e) { // General Exception?
+                                    catch (\Exception $e) { // General Exception
                                         error_log('Could not post image to Flickr: ' . $e->getMessage());
                                     }
                                 }
