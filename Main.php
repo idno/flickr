@@ -44,7 +44,6 @@
 
                 // Push "images" to Flickr
                 \Idno\Core\Idno::site()->addEventHook('post/image/flickr',function(\Idno\Core\Event $event) {
-                    fwrite(fopen(dirname(__FILE__) . '/Pages/oath.log', 'a'), "push to Flickr\n");
                     $eventdata = $event->data();
                     $object = $eventdata['object'];
                     if ($attachments = $object->getAttachments()) {
@@ -65,8 +64,6 @@
                                     $name = 'Flickr';
                                 }
 
-                                fwrite(fopen(dirname(__FILE__) . '/Pages/oath.log', 'a'), "$name:$token\n");
-
                                 if (!$flickrAPI) {
                                     error_log('Failed to connect to Flickr API');
                                 }
@@ -77,71 +74,53 @@
                                     $tags = str_replace('#','',implode(' ', $object->getTags())); // Get string of non-hashtagged tags
                                     try {
 
-//         function upload($photo, $title='', $description='', $tags='', $perms='', $async=1, &$info=NULL) {
-
-// $attachment['url'], html_entity_decode($object->getTitle()),
-// html_entity_decode($object->getDescription()) . "\n\nOriginal: " . $object->getURL(), $tags, array("is_public"=>1), 0
-
-            $title = html_entity_decode($object->getTitle());
-            $photo = $attachment['url'];
-            fwrite(fopen(dirname(__FILE__) . '/Pages/oath.log', 'a'), "\$photo:$photo\n");
-            $perms = array("is_public"=>1);
-            $description = html_entity_decode($object->getDescription()) . "\n\nOriginal: " . $object->getURL();
+                                        $title = html_entity_decode($object->getTitle());
+                                        $photo = $attachment['url'];
+                                        $perms = array("is_public"=>1);
+                                        $description = html_entity_decode($object->getDescription()) . "\n\nOriginal: " . $object->getURL();
 
 /*
-                            if ($bytes = \Idno\Entities\File::getFileDataFromAttachment($attachment)) {
-                                $media = array();
-                                $filename = tempnam(sys_get_temp_dir(), 'idnoflickr');
-                                file_put_contents($filename, $bytes);
+                                        if ($bytes = \Idno\Entities\File::getFileDataFromAttachment($attachment)) {
+                                            $media = array();
+                                            $filename = tempnam(sys_get_temp_dir(), 'idnoflickr');
+                                            file_put_contents($filename, $bytes);
 
-                                CURLFile $filename
-                                '@' . $filename
-
-                                $params = $media;
+                                            if(version_compare(phpversion(), '5.5', '>=')) {
+                                                $params['photo'] = new \CURLFile($filename);
+                                            } else {
+                                                $params['photo'] = '@'.$filename;
+                                            }
 */
+                                        $url = parse_url($photo);
+                                        if(isset($url['scheme'])) {
+                                            $stream = fopen($photo,'r');
+                                            $tmpf = tempnam('/var/tmp','G2F');
+                                            file_put_contents($tmpf, $stream);
+                                            fclose($stream);
+                                            $params['photo'] = $tmpf;
+                                        } else $params['photo'] = $photo;
+/**/
+                                        $info = filesize($params['photo']);
+                                        if($title)       $params['title']       = $title;
+                                        if($description) $params['description'] = $description;
+                                        if($tags)        $params['tags']        = $tags;  // Space-separated string
+                                        if($perms) {
+                                            if(isset($perms['is_public'])) $params['is_public'] = $perms['is_public'];
+                                            if(isset($perms['is_friend'])) $params['is_friend'] = $perms['is_friend'];
+                                            if(isset($perms['is_family'])) $params['is_family'] = $perms['is_family'];
+                                        }
+/**/
+                                        $photo_file = $params['photo'];
 
-            $url = parse_url($photo);
-            if(isset($url['scheme'])) {
-                fwrite(fopen(dirname(__FILE__) . '/Pages/oath.log', 'a'), 'isset($url[\'scheme\']): ' . $url['scheme']."\n");
-                $stream = fopen($photo,'r');
-                $tmpf = tempnam('/var/tmp','G2F');
-                file_put_contents($tmpf, $stream);
-                fclose($stream);
-                $params['photo'] = $tmpf;
-            } else $params['photo'] = $photo;
+                                        if(version_compare(phpversion(), '5.5', '>=')) {
+                                            $params['photo'] = new \CURLFile($photo_file);
+                                        } else {
+                                            $params['photo'] = '@'.$photo_file;
+                                        }
+/**/
+                                        if($async)       $params['async']       = $async;
 
-// public/Uploads/charlienovemb.re/1/6/9/e/169e16aec2f99583240a8ea2712003b0.file
-
-            $info = filesize($params['photo']);
-                                fwrite(fopen(dirname(__FILE__) . '/Pages/oath.log', 'a'), "\$info:$info\n");
-            if($title)       $params['title']       = $title;
-            if($description) $params['description'] = $description;
-            if($tags)        $params['tags']        = $tags;  // Space-separated string
-            if($perms) {
-                if(isset($perms['is_public'])) $params['is_public'] = $perms['is_public'];
-                if(isset($perms['is_friend'])) $params['is_friend'] = $perms['is_friend'];
-                if(isset($perms['is_family'])) $params['is_family'] = $perms['is_family'];
-            }
-
-                $photo = $params['photo'];
-
-                if(version_compare(phpversion(), '5.5', '>=')) {
-                    $params['photo'] = new \CURLFile($photo);
-                } else {
-                    $params['photo'] = '@'.$photo;
-                }
-
-            if($async)       $params['async']       = $async;
-
-//$attachment['url'], html_entity_decode($object->getTitle()), html_entity_decode($object->getDescription()) . "\n\nOriginal: " . $object->getURL(), $tags, array("is_public"=>1), 0
-
-//                                            fwrite(fopen(dirname(__FILE__) . '/Pages/oath.log', 'a'), print_r($params, true) . "\n"); // !
-
-//                                        $photo_id = $flickrAPI->upload($attachment['url'], html_entity_decode($object->getTitle()), html_entity_decode($object->getDescription()) . "\n\nOriginal: " . $object->getURL(), $tags, array("is_public"=>1), 0);
                                         $photo_id = $flickrAPI->upload($params);
-
-// Array ( [stat] => fail [err] => Array ( ) ) 
-// Array ( [stat] => ok [photoid] => Array ( [_content] => 38283605892 ) )
 
                                         $ok = @$photo_id['stat'];
 
@@ -150,24 +129,20 @@
                                                                        array('photo_id' => $photo_id['photoid']['_content']));
 
                                         	if ($photo['photo']['urls']['url'][0]['type'] == 'photopage') {
-                                                    fwrite(fopen(dirname(__FILE__) . '/Pages/oath.log', 'a'), $photo['photo']['urls']['url'][0]['_content']."\n");
                                         		$object->setPosseLink('flickr',$photo['photo']['urls']['url'][0]['_content'], $name);
                                         		$object->save();
                                         	}
                                             \Idno\Core\Idno::site()->logging()->log($photo_id['photoid']['_content'] . ' pushed to Flickr.');
-//                                            fwrite(fopen(dirname(__FILE__) . '/Pages/oath.log', 'a'), "pushed to Flickr\n");
-/*
-                            }
-*/
                                         }
                                         else {
                                             error_log("Failed to upload image to Flickr. code={$flickrAPI->getErrorCode()}, error={$flickrAPI->getErrorMessage()}");
-                                            fwrite(fopen(dirname(__FILE__) . '/Pages/oath.log', 'a'), "No push to Flickr\n"); // !
                                         }
+/*
+                                        }
+*/
                                     }
-                                    catch (\FlickrApiException $e) {
+                                    catch (\FlickrApiException $e) { // General Exception?
                                         error_log('Could not post image to Flickr: ' . $e->getMessage());
-                                    //    fwrite(fopen(dirname(__FILE__) . '/Pages/oath.log', 'a'), "Not pushed to Flickr\n");
                                     }
                                 }
                             }
@@ -194,22 +169,12 @@
             function connect($username = false) {
                 if (!empty(\Idno\Core\Idno::site()->config()->flickr)) {
                     require_once(dirname(__FILE__) . '/external/DPZ/Flickr.php');
-/*                    $flickr = new \Flickr(array(
-                        'api_key' => \Idno\Core\Idno::site()->config()->flickr['apiKey'],
-                        'api_secret' => \Idno\Core\Idno::site()->config()->flickr['secret']
-                    ));*/
                     $flickr = new \DPZ\Flickr(\Idno\Core\Idno::site()->config()->flickr['apiKey'],
                                               \Idno\Core\Idno::site()->config()->flickr['secret']);
                     if ($this->hasFlickr()) {
                         if (empty($username)) {
                             if (!empty(\Idno\Core\Idno::site()->session()->currentUser()->flickr['access_token'])) {
-//                                $flickr->token = \Idno\Core\Idno::site()->session()->currentUser()->flickr['access_token'];
-//                                $flickr->secret = \Idno\Core\Idno::site()->session()->currentUser()->flickr['secret'];
-//            $this->setOauthData(self::OAUTH_ACCESS_TOKEN, $accessToken);
-//            $this->setOauthData(self::OAUTH_ACCESS_TOKEN_SECRET, $accessTokenSecret);
-// need public setter
-
-// https://github.com/dopiaza/DPZFlickr/pull/8 https://github.com/lucasgd/DPZFlickr
+                                // https://github.com/dopiaza/DPZFlickr/pull/8 https://github.com/lucasgd/DPZFlickr
 
                                 $flickr->isValidOauthToken(\Idno\Core\Idno::site()->session()->currentUser()->flickr['access_token'],
                                                            \Idno\Core\Idno::site()->session()->currentUser()->flickr['secret']);
@@ -227,9 +192,6 @@
                         }
                     }
 
-//                    fwrite(fopen(dirname(__FILE__) . '/Pages/oath.log', 'a'), "Object->token: {$flickr->getOauthData('oauth_access_token')}\n");
-//                    fwrite(fopen(dirname(__FILE__) . '/Pages/oath.log', 'a'), "Object->secret: {$flickr->getOauthData('oauth_access_token_secret')}\n");
-
                     return $flickr;
                 }
                 return false;
@@ -241,14 +203,11 @@
              */
             function hasFlickr() {
                 if (!\Idno\Core\Idno::site()->session()->currentUser()) {
-                    fwrite(fopen(dirname(__FILE__) . '/Pages/oath.log', 'a'), "No Flickr()\n");
                     return false;
                 }
                 if (\Idno\Core\Idno::site()->session()->currentUser()->flickr) {
-                    fwrite(fopen(dirname(__FILE__) . '/Pages/oath.log', 'a'), "Has Flickr()\n");
                     return true;
                 }
-                fwrite(fopen(dirname(__FILE__) . '/Pages/oath.log', 'a'), "Has Failed\n");
                 return false;
             }
 
