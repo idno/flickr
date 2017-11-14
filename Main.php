@@ -59,7 +59,6 @@
 
                                 if (!empty($user_details['username'])) {
                                     $name = $user_details['username'];
-                                   $token = $user_details['access_token'];
                                 } else {
                                     $name = 'Flickr';
                                 }
