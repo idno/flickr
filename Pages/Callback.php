@@ -65,8 +65,6 @@
                         $access_token_secret = $_SESSION['faccess_oauth_token_secret'];
                         $oauthc->setToken($access_token,$access_token_secret);
 
-//fwrite(fopen(dirname(__FILE__) . '/oath.log', 'a'), print_r($_SESSION, true));
-
                         $result = array();
 
                         try {
