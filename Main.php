@@ -110,7 +110,7 @@
                                                                           array('photo_id' => $photo_id['photoid']['_content']));
 
                                             if ($photo['photo']['urls']['url'][0]['type'] == 'photopage') {
-                                                $object->setPosseLink('flickr',$photo['photo']['urls']['url'][0]['_content'], $name);
+                                                $object->setPosseLink('flickr',$photo['photo']['urls']['url'][0]['_content'], $name, $photo_id['photoid']['_content'], $photo['photo']['owner']['username']);
                                                 $object->save();
                                             }
                                             \Idno\Core\Idno::site()->logging()->log($photo_id['photoid']['_content'] . ' pushed to Flickr.');
