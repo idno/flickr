@@ -1,1 +1,1 @@
-<i class="fa fa-flickr"></i>
+<i class="fab fa-flickr"></i>

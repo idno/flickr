@@ -25,7 +25,7 @@
 
                             <div class="social">
                                 <p>
-                                    <a href="<?= $vars['login_url'] ?>" class="connect fl"><i class="fa fa-flickr"></i> Connect Flickr</a>
+                                    <a href="<?= $vars['login_url'] ?>" class="connect fl"><i class="fab fa-flickr"></i> Connect Flickr</a>
                                 </p>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
 										<form action="<?=\Idno\Core\Idno::site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
 										<p>
                                         <input type="hidden" name="remove" value="1"/>
-                                        <button type="submit" class="connect fl connected"><i class="fa fa-flickr"></i> Disconnect Flickr</button>
+                                        <button type="submit" class="connect fl connected"><i class="fab fa-flickr"></i> Disconnect Flickr</button>
                                         <?= \Idno\Core\Idno::site()->actions()->signForm('/flickr/deauth/') ?>
                                     	</p>
                                 		</form>
@@ -86,7 +86,7 @@
                                             <p>
                                                 <input type="hidden" name="remove" value="<?= $account['username'] ?>"/>
                                                 <button type="submit"
-                                                        class="connect fl connected"><i class="fa fa-flickr"></i> <?= $account['username'] ?> (Disconnect)</button>
+                                                        class="connect fl connected"><i class="fab fa-flickr"></i> <?= $account['username'] ?> (Disconnect)</button>
                                                 <?= \Idno\Core\Idno::site()->actions()->signForm('/flickr/deauth/') ?>
                                             </p>
                                         </form>
@@ -103,7 +103,7 @@
                                         <form action="<?=\Idno\Core\Idno::site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
                                             <p>
                                                 <input type="hidden" name="remove" value="1"/>
-                                                <button type="submit" class="connect fl connected"><i class="fa fa-flickr"></i> Disconnect Flickr</button>
+                                                <button type="submit" class="connect fl connected"><i class="fab fa-flickr"></i> Disconnect Flickr</button>
                                                 <?= \Idno\Core\Idno::site()->actions()->signForm('/flickr/deauth/') ?>
                                             </p>
                                         </form>
