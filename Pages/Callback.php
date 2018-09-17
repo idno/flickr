@@ -32,7 +32,7 @@
 
                     if(empty($_SESSION['frequest_token_secret'])) {
                         //get the request token, and store it
-                        $request_token_info = $oauthc->getRequestToken($oauth['flickr']['requesttokenurl']);
+                        $request_token_info = $oauthc->getRequestToken($oauth['flickr']['requesttokenurl'], $callback);
                         $_SESSION['frequest_token_secret'] = $request_token_info['oauth_token_secret'];
 
                         // forward user to authorize url with appropriate permission flag
