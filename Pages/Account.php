@@ -29,7 +29,7 @@
                     $user = \Idno\Core\Idno::site()->session()->currentUser();
                     $user->flickr = array();
                     $user->save();
-                    \Idno\Core\Idno::site()->session()->addMessage('Your Flickr settings have been removed from your account.');
+                    \Idno\Core\Idno::site()->session()->addMessage(\Idno\Core\Idno::site()->language()->_('Your Flickr settings have been removed from your account.'));
                 }
                 $this->forward(\Idno\Core\Idno::site()->config()->getDisplayURL() . 'account/flickr/');
             }

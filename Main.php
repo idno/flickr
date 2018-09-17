@@ -3,6 +3,15 @@
     namespace IdnoPlugins\Flickr {
 
         class Main extends \Idno\Common\Plugin {
+	    
+	    function registerTranslations() {
+
+                \Idno\Core\Idno::site()->language()->register(
+                    new \Idno\Core\GetTextTranslation(
+                        'flickr', dirname(__FILE__) . '/languages/'
+                    )
+                );
+            }
 
             function registerPages() {
                 // Deauth URL
