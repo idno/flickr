@@ -19,7 +19,7 @@
 
                     // https://hasin.me/2012/03/07/connecting-to-flickr-using-pecl-oauth-extension/
 
-                    $oauth['flickr']['requesttokenurl'] = "http://www.flickr.com/services/oauth/request_token";
+                    $oauth['flickr']['requesttokenurl'] = "https://www.flickr.com/services/oauth/request_token";
                     $oauth['flickr']['accesstokenurl']  = "https://www.flickr.com/services/oauth/access_token";
                     $oauth['flickr']['authurl']         = "https://www.flickr.com/services/oauth/authorize";
 
