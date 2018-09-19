@@ -27,35 +27,25 @@
                     $api_secret = \Idno\Core\Idno::site()->config()->flickr['secret'];
                     $callback = \Idno\Core\Idno::site()->config()->getURL() . 'flickr/callback';
 
-                    $oauthc = new \OAuth($api_key, $api_secret,
-                                         OAUTH_SIG_METHOD_HMACSHA1,OAUTH_AUTH_TYPE_URI); //initiate
+                    require_once(dirname(__FILE__) . '/../external/DPZ/Flickr.php');
+                    $flickr = new \DPZ\Flickr(\Idno\Core\Idno::site()->config()->flickr['apiKey'],
+                                              \Idno\Core\Idno::site()->config()->flickr['secret'],
+                                              $callback);
 
-                    if(empty($_SESSION['frequest_token_secret'])) {
-                        //get the request token, and store it
-                        $request_token_info = $oauthc->getRequestToken($oauth['flickr']['requesttokenurl'], $callback);
-                        $_SESSION['frequest_token_secret'] = $request_token_info['oauth_token_secret'];
+                    if(empty($_SESSION['faccess_oauth_token'])) {
 
-                        // forward user to authorize url with appropriate permission flag
-                        $this->forward("{$oauth['flickr']['authurl']}?oauth_token={$request_token_info['oauth_token']}&perms=write");
-                    }
-                    // callback
-                    else if(empty($_SESSION['faccess_oauth_token'])) {
-                        //get the access token - do not forget to save it!
-                        $request_token_secret = $_SESSION['frequest_token_secret'];
+                        if(!$flickr->authenticate('write')) die('Laughing');
+                        $access_token_info = $flickr->authenticate('write');
 
-                        $oauthc->setToken($this->getInput('oauth_token'),$request_token_secret);//user allowed the app, so u…
+                        $userNsid = $flickr->getOauthData(\DPZ\Flickr::USER_NSID);
+                        $userName = $flickr->getOauthData(\DPZ\Flickr::USER_NAME);
+                        $userFullName = $flickr->getOauthData(\DPZ\Flickr::USER_FULL_NAME);
 
-                        // handshake
-                        try {
-                            $access_token_info = $oauthc->getAccessToken($oauth['flickr']['accesstokenurl']);
-                        } catch(OAuthException $E) {
-                           // echo "Exception caught!\n";
-                           // echo "Response: ". $E->lastResponse . "\n";
-                            error_log('Exception. Response: ' . $E->lastResponse);
+                        if($access_token_info) {
+                            $_SESSION['faccess_oauth_token'] = $flickr->getOauthData('oauth_access_token');
+                            error_log('oauth_access_token: ' . $_SESSION['faccess_oauth_token'] . ' ;');
+                            $_SESSION['faccess_oauth_token_secret'] = $flickr->getOauthData('oauth_access_token_secret');
                         }
-
-                        $_SESSION['faccess_oauth_token']= $access_token_info['oauth_token'];
-                        $_SESSION['faccess_oauth_token_secret']= $access_token_info['oauth_token_secret'];
                     }
 
                     // authenticated
@@ -63,30 +53,14 @@
                         //now fetch current user's profile
                         $access_token = $_SESSION['faccess_oauth_token'];
                         $access_token_secret = $_SESSION['faccess_oauth_token_secret'];
-                        $oauthc->setToken($access_token,$access_token_secret);
 
-                        $result = array();
+                        $response = $flickr->call('flickr.auth.oauth.checkToken');
 
-                        try {
-
-                            $data = $oauthc->fetch(
-                                    'https://api.flickr.com/services/rest/?method=flickr.auth.oauth.checkToken&api_key='.
-                                    $api_key.'&format=json&nojsoncallback=1'
-                                  );
-
-                        } catch(OAuthException $E) {
-                            error_log("Exception. Response: ". $E->lastResponse);
+                        if (@$response['stat'] === 'ok')
+                        {
+                          $result['fullname'] = $response['oauth']['user']['fullname'];
+                          $result['username'] = $response['oauth']['user']['username'];
                         }
-
-                        $response_info = $oauthc->getLastResponse();
-                        $profile_json = json_decode($response_info);
-
-                            echo "<pre>";
-                            print_r($profile_json);
-                            echo "</pre>";
-
-                        $result['fullname'] = $profile_json->oauth->user->fullname;
-                        $result['username'] = $profile_json->oauth->user->username;
 
                          $result['token'] = $_SESSION['faccess_oauth_token'];
                         $result['secret'] = $_SESSION['faccess_oauth_token_secret'];
