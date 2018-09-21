@@ -49,6 +49,9 @@
                     if ($attachments = $object->getAttachments()) {
                         foreach($attachments as $attachment) {
                             if ($this->hasFlickr()) {
+				
+				\Idno\Core\Idno::site()->logging()->debug('Posting image to flickr...');
+				
                                 if (!empty($eventdata['syndication_account'])) {
                                     $flickrAPI  = $this->connect($eventdata['syndication_account']);
                                     $user_details = \Idno\Core\Idno::site()->session()->currentUser()->flickr[$eventdata['syndication_account']];
@@ -64,10 +67,10 @@
                                 }
 
                                 if (!$flickrAPI) {
-                                    error_log('Failed to connect to Flickr API');
+                                    \Idno\Core\Idno::site()->logging()->error('Failed to connect to Flickr API');
                                 }
                                 else if (empty($user_details)) {
-                                    error_log('Failed to get user_details');
+                                    \Idno\Core\Idno::site()->logging()->error('Failed to get user_details');
                                 }
                                 else {
                                     $tags = str_replace('#','',implode(' ', $object->getTags())); // Get string of non-hashtagged tags
@@ -102,6 +105,8 @@
                                             if($async)       $params['async']       = $async;
 
                                             $photo_id = $flickrAPI->upload($params);
+					    
+					    \Idno\Core\Idno::site()->logging()->debug('Flickr responded with ' . print_r($photo_id, true));
 
                                             $ok = @$photo_id['stat'];
 
@@ -109,21 +114,21 @@
                                                 $photo = $flickrAPI->call('flickr.photos.getInfo',
                                                                           array('photo_id' => $photo_id['photoid']['_content']));
 
-                                            if ($photo['photo']['urls']['url'][0]['type'] == 'photopage') {
-                                                $object->setPosseLink('flickr',$photo['photo']['urls']['url'][0]['_content'], $name, $photo_id['photoid']['_content'], $photo['photo']['owner']['username']);
-                                                $object->save();
-                                            }
-                                            \Idno\Core\Idno::site()->logging()->log($photo_id['photoid']['_content'] . ' pushed to Flickr.');
-                                        }
-                                        else {
-                                            error_log("Failed to upload image to Flickr. code={$flickrAPI->getErrorCode()}, error={$flickrAPI->getErrorMessage()}");
-                                        }
+						if ($photo['photo']['urls']['url'][0]['type'] == 'photopage') {
+						    $object->setPosseLink('flickr',$photo['photo']['urls']['url'][0]['_content'], $name, $photo_id['photoid']['_content'], $photo['photo']['owner']['username']);
+						    $object->save();
+						}
+						\Idno\Core\Idno::site()->logging()->log($photo_id['photoid']['_content'] . ' pushed to Flickr.');
+					    }
+					    else {
+						\Idno\Core\Idno::site()->logging()->error("Failed to upload image to Flickr. code={$flickrAPI->getErrorCode()}, error={$flickrAPI->getErrorMessage()}");
+					    }
 
                                         }
 
                                     }
                                     catch (\Exception $e) { // General Exception
-                                        error_log('Could not post image to Flickr: ' . $e->getMessage());
+                                        \Idno\Core\Idno::site()->logging()->error('Could not post image to Flickr: ' . $e->getMessage());
                                     }
                                 }
                             }
