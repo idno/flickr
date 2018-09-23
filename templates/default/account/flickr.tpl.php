@@ -2,7 +2,7 @@
 
     <div class="col-md-10 col-md-offset-1">
         <?= $this->draw('account/menu') ?>
-        <h1>Flickr</h1>
+        <h1><?= \Idno\Core\Idno::site()->language()->_('Flickr'); ?></h1>
     </div>
 
 </div>
@@ -16,16 +16,15 @@
                             <div class="row">
                                 <div class="col-md-7">
                                     <p>
-                                        Easily share pictures to Flickr.</p>
+                                        <?= \Idno\Core\Idno::site()->language()->_('Easily share pictures to Flickr.'); ?></p>
 
                                     <p>
-                                        With Flickr connected, you can cross-post images that you publish publicly on
-                                        your site.
+                                        <?= \Idno\Core\Idno::site()->language()->_('With Flickr connected, you can cross-post images that you publish publicly on your site.'); ?>
                                     </p>
 
                             <div class="social">
                                 <p>
-                                    <a href="<?= $vars['login_url'] ?>" class="connect fl"><i class="fab fa-flickr"></i> Connect Flickr</a>
+                                    <a href="<?= $vars['login_url'] ?>" class="connect fl"><i class="fab fa-flickr"></i> <?= \Idno\Core\Idno::site()->language()->_('Connect Flickr'); ?></a>
                                 </p>
                             </div>
                         </div>
@@ -42,15 +41,14 @@
                             <div class="row">
                                 <div class="col-md-7">
                                     <p>
-                                        Your account is currently connected to Flickr. Public content that you post here
-                                        can be shared with your Flickr account.
+                                        <?= \Idno\Core\Idno::site()->language()->_('Your account is currently connected to Flickr. Public content that you post here can be shared with your Flickr account.'); ?>
                                     </p>
 
 									<div class="social">
 										<form action="<?=\Idno\Core\Idno::site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
 										<p>
                                         <input type="hidden" name="remove" value="1"/>
-                                        <button type="submit" class="connect fl connected"><i class="fab fa-flickr"></i> Disconnect Flickr</button>
+                                        <button type="submit" class="connect fl connected"><i class="fab fa-flickr"></i> <?= \Idno\Core\Idno::site()->language()->_('Disconnect Flickr'); ?></button>
                                         <?= \Idno\Core\Idno::site()->actions()->signForm('/flickr/deauth/') ?>
                                     	</p>
                                 		</form>
@@ -70,9 +68,7 @@
                             <div class="row">
                                 <div class="col-md-7">
                                     <p>
-                                        You have connected the following accounts to Flickr. Public content that you
-                                        post here
-                                        can be shared with your Flickr accounts.
+                                        <?= \Idno\Core\Idno::site()->language()->_('You have connected the following accounts to Flickr. Public content that you post here can be shared with your Flickr accounts.'); ?>
                                     </p>
                             <?php
 
@@ -86,7 +82,7 @@
                                             <p>
                                                 <input type="hidden" name="remove" value="<?= $account['username'] ?>"/>
                                                 <button type="submit"
-                                                        class="connect fl connected"><i class="fab fa-flickr"></i> <?= $account['username'] ?> (Disconnect)</button>
+                                                        class="connect fl connected"><i class="fab fa-flickr"></i> <?= $account['username'] ?> (<?= \Idno\Core\Idno::site()->language()->_('Disconnect'); ?>)</button>
                                                 <?= \Idno\Core\Idno::site()->actions()->signForm('/flickr/deauth/') ?>
                                             </p>
                                         </form>
@@ -103,7 +99,7 @@
                                         <form action="<?=\Idno\Core\Idno::site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
                                             <p>
                                                 <input type="hidden" name="remove" value="1"/>
-                                                <button type="submit" class="connect fl connected"><i class="fab fa-flickr"></i> Disconnect Flickr</button>
+                                                <button type="submit" class="connect fl connected"><i class="fab fa-flickr"></i> <?= \Idno\Core\Idno::site()->language()->_('Disconnect Flickr'); ?></button>
                                                 <?= \Idno\Core\Idno::site()->actions()->signForm('/flickr/deauth/') ?>
                                             </p>
                                         </form>
@@ -115,7 +111,7 @@
                             ?>
 
                           <p>
-                                        <a href="<?= $vars['oauth_url'] ?>" class=""><i class="fa fa-plus"></i> Add another Flickr account</a>
+                                        <a href="<?= $vars['oauth_url'] ?>" class=""><i class="fa fa-plus"></i> <?= \Idno\Core\Idno::site()->language()->_('Add another Flickr account'); ?></a>
                                     </p>
                         </div>
                     </div>

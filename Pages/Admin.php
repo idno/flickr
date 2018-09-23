@@ -29,7 +29,7 @@
                     'secret' => $secret
                 );
                 \Idno\Core\Idno::site()->config()->save();
-                \Idno\Core\Idno::site()->session()->addMessage('Your Flickr application details were saved.');
+                \Idno\Core\Idno::site()->session()->addMessage(\Idno\Core\Idno::site()->language()->_('Your Flickr application details were saved.'));
                 $this->forward(\Idno\Core\Idno::site()->config()->getDisplayURL() . 'admin/flickr/');
             }
 
