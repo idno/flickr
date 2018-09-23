@@ -1,0 +1,60 @@
+#: ./Pages/Account.php:13
+msgid "Your Flickr settings have been removed from your account."
+msgstr ""
+
+#: ./Pages/Admin.php:13
+msgid "Your Flickr application details were saved."
+msgstr ""
+
+#: ./templates/default/admin/flickr.tpl.php:6
+msgid "Flickr configuration"
+msgstr ""
+
+#: ./templates/default/admin/flickr.tpl.php:13
+msgid "To begin using Flickr, <a href=\"http://www.flickr.com/services/apps/\" target=\"_blank\">create a new application in the Flickr apps portal</a>."
+msgstr ""
+
+#: ./templates/default/admin/flickr.tpl.php:13
+msgid "You need to edit the authentication flow and set the callback URL to:"
+msgstr ""
+
+#: ./templates/default/admin/flickr.tpl.php:13
+msgid "Once you\'ve finished, fill in the details below. You can then <a href=\"%s\">connect your Flickr account</a>."
+msgstr ""
+
+#: ./templates/default/account/flickr.tpl.php:6
+msgid "Flickr"
+msgstr ""
+
+#: ./templates/default/account/flickr.tpl.php:13
+msgid "Easily share pictures to Flickr."
+msgstr ""
+
+#: ./templates/default/account/flickr.tpl.php:13
+msgid "With Flickr connected, you can cross-post images that you publish publicly on your site."
+msgstr ""
+
+#: ./templates/default/account/flickr.tpl.php:13
+msgid "Connect Flickr"
+msgstr ""
+
+#: ./templates/default/account/flickr.tpl.php:13
+msgid "Your account is currently connected to Flickr. Public content that you post here can be shared with your Flickr account."
+msgstr ""
+
+#: ./templates/default/account/flickr.tpl.php:13
+msgid "Disconnect Flickr"
+msgstr ""
+
+#: ./templates/default/account/flickr.tpl.php:13
+msgid "You have connected the following accounts to Flickr. Public content that you post here can be shared with your Flickr accounts."
+msgstr ""
+
+#: ./templates/default/account/flickr.tpl.php:13
+msgid "Disconnect"
+msgstr ""
+
+#: ./templates/default/account/flickr.tpl.php:13
+msgid "Add another Flickr account"
+msgstr ""
+

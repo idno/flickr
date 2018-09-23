@@ -2,7 +2,7 @@
 
     <div class="col-md-10 col-md-offset-1">
 	            <?=$this->draw('admin/menu')?>
-        <h1>Flickr configuration</h1>
+        <h1><?= \Idno\Core\Idno::site()->language()->_('Flickr configuration'); ?></h1>
     </div>
 
 </div>
@@ -12,17 +12,16 @@
             <div class="controls-group">
                 <div class="controls-config">
                     <p>
-                        To begin using Flickr, <a href="http://www.flickr.com/services/apps/" target="_blank">create a new application in
-                            the Flickr apps portal</a>.</p>
+                        <?= \Idno\Core\Idno::site()->language()->_('To begin using Flickr, <a href="http://www.flickr.com/services/apps/" target="_blank">create a new application in the Flickr apps portal</a>.'); ?></p>
                     <p>
-                        You need to edit the authentication flow and set the callback URL to:<br />
+                        <?= \Idno\Core\Idno::site()->language()->_('You need to edit the authentication flow and set the callback URL to:'); ?><br />
                         <input type="text" class="form-control" value="<?=\Idno\Core\Idno::site()->config()->url . 'flickr/callback'?>" />
                     </p>
                 </div>
             </div>
             <div class="controls-group">
 	                <p>
-                        Once you've finished, fill in the details below. You can then <a href="<?=\Idno\Core\Idno::site()->config()->getURL()?>account/flickr/">connect your Flickr account</a>.
+                        <?= \Idno\Core\Idno::site()->language()->_('Once you\'ve finished, fill in the details below. You can then <a href="%s">connect your Flickr account</a>.', [\Idno\Core\Idno::site()->config()->getURL() . "account/flickr/"]); ?>
                     </p>
                 <label class="control-label" for="name">API Key</label>
                     <input type="text" id="name" placeholder="API Key" class="form-control" name="apiKey" value="<?=htmlspecialchars(\Idno\Core\Idno::site()->config()->flickr['apiKey'])?>" >
