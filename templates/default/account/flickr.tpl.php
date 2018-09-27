@@ -115,7 +115,7 @@
                             ?>
 
                           <p>
-                                        <a href="<?= $vars['oauth_url'] ?>" class=""><i class="fa fa-plus"></i> Add another Flickr account</a>
+                                        <a href="<?= $vars['login_url'] ?>" class=""><i class="fa fa-plus"></i> Add another Flickr account</a>
                                     </p>
                         </div>
                     </div>
