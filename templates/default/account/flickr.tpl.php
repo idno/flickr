@@ -23,6 +23,10 @@
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
             <?php
+
+            if (!empty(\Idno\Core\site()->config()->flickr['apiKey']) && !empty(\Idno\Core\site()->config()->flickr['secret'])) {
+
+
             if (empty(\Idno\Core\Idno::site()->session()->currentUser()->flickr)) {
                 ?>
                     <div class="control-group">
@@ -134,6 +138,41 @@
                 <?php
 
             }
-            ?>
+
+            } else {
+
+                if (\Idno\Core\site()->session()->currentUser()->isAdmin()) {
+
+                    ?>
+                                  <div class="control-group">
+                      <div class="controls-config">
+	                    <div class="row">
+                                 <div class="col-md-7">
+                    <p>
+                        <?= \Idno\Core\Idno::site()->language()->_('Before you can begin connecting to Flickr, you need to set it up.'); ?>
+                    </p>
+                    <p>
+                        <a href="<?= \Idno\Core\site()->config()->getDisplayURL() ?>admin/flickr/"><?= \Idno\Core\Idno::site()->language()->_('Click here to begin Flickr configuration.'); ?></a>
+                    </p>
+                <?php
+
+                } else {
+
+                    ?>
+                    <p>
+                        <?= \Idno\Core\Idno::site()->language()->_('The administrator has not finished setting up Flickr on this site. Please come back later.'); ?>
+                    </p>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+
+                <?php
+
+                }
+
+            }
+
+        ?>
     </div>
 </div>
