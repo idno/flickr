@@ -33,7 +33,7 @@
                     </div>
                         </div>
                     </div>
-                <?php
+                    <?php
 
                 } else if (!\Idno\Core\Idno::site()->config()->multipleSyndicationAccounts()) {
 
@@ -46,21 +46,21 @@
                                         <?= \Idno\Core\Idno::site()->language()->_('Your account is currently connected to Flickr. Public content that you post here can be shared with your Flickr account.'); ?>
                                     </p>
 
-									<div class="social">
-										<form action="<?=\Idno\Core\Idno::site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
-										<p>
+                                    <div class="social">
+                                        <form action="<?=\Idno\Core\Idno::site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
+                                        <p>
                                         <input type="hidden" name="remove" value="1"/>
                                         <button type="submit" class="connect fl connected"><i class="fab fa-flickr"></i> <?= \Idno\Core\Idno::site()->language()->_('Disconnect Flickr'); ?></button>
                                         <?= \Idno\Core\Idno::site()->actions()->signForm('/flickr/deauth/') ?>
-                                    	</p>
-                                		</form>
-                            		</div>
-                        		</div>
-                    		</div>
+                                        </p>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                <?php
+                    <?php
 
                 } else {
 
@@ -74,41 +74,41 @@
                                     </p>
                             <?php
 
-                                if ($accounts = \Idno\Core\Idno::site()->syndication()->getServiceAccounts('flickr')) {
+                            if ($accounts = \Idno\Core\Idno::site()->syndication()->getServiceAccounts('flickr')) {
 
-                                    foreach ($accounts as $account) {
+                                foreach ($accounts as $account) {
 
-                                        ?>
-									<div class="social">
+                                    ?>
+                                    <div class="social">
                                         <form action="<?=\Idno\Core\Idno::site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
                                             <p>
                                                 <input type="hidden" name="remove" value="<?= $account['username'] ?>"/>
                                                 <button type="submit"
                                                         class="connect fl connected"><i class="fab fa-flickr"></i> <?= $account['username'] ?> (<?= \Idno\Core\Idno::site()->language()->_('Disconnect'); ?>)</button>
-                                                <?= \Idno\Core\Idno::site()->actions()->signForm('/flickr/deauth/') ?>
-                                            </p>
-                                        </form>
-                                        </div>
-                                    <?php
-
-                                    }
-
-                                } else {
-
-                                    ?>
-
-                                    <div class="social">
-                                        <form action="<?=\Idno\Core\Idno::site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
-                                            <p>
-                                                <input type="hidden" name="remove" value="1"/>
-                                                <button type="submit" class="connect fl connected"><i class="fab fa-flickr"></i> <?= \Idno\Core\Idno::site()->language()->_('Disconnect Flickr'); ?></button>
-                                                <?= \Idno\Core\Idno::site()->actions()->signForm('/flickr/deauth/') ?>
+                                            <?= \Idno\Core\Idno::site()->actions()->signForm('/flickr/deauth/') ?>
                                             </p>
                                         </form>
                                         </div>
                                     <?php
 
                                 }
+
+                            } else {
+
+                                ?>
+
+                                    <div class="social">
+                                        <form action="<?=\Idno\Core\Idno::site()->config()->getDisplayURL()?>flickr/deauth" class="form-horizontal" method="post">
+                                            <p>
+                                                <input type="hidden" name="remove" value="1"/>
+                                                <button type="submit" class="connect fl connected"><i class="fab fa-flickr"></i> <?= \Idno\Core\Idno::site()->language()->_('Disconnect Flickr'); ?></button>
+                                            <?= \Idno\Core\Idno::site()->actions()->signForm('/flickr/deauth/') ?>
+                                            </p>
+                                        </form>
+                                        </div>
+                                    <?php
+
+                            }
 
                             ?>
 
@@ -119,32 +119,32 @@
                     </div>
                         </div>
                     </div>
-                <?php
+                    <?php
 
                 }
 
             } else {
 
-                if (\Idno\Core\site()->session()->currentUser()->isAdmin()) {
+            if (\Idno\Core\site()->session()->currentUser()->isAdmin()) {
 
-                    ?>
+                ?>
                     <div class="control-group">
                       <div class="controls-config">
                            <div class="row">
                                  <div class="col-md-7">
                     <p>
-                        <?= \Idno\Core\Idno::site()->language()->_('Before you can begin connecting to Flickr, you need to set it up.'); ?>
+                    <?= \Idno\Core\Idno::site()->language()->_('Before you can begin connecting to Flickr, you need to set it up.'); ?>
                     </p>
                     <p>
                         <a href="<?= \Idno\Core\site()->config()->getDisplayURL() ?>admin/flickr/"><?= \Idno\Core\Idno::site()->language()->_('Click here to begin Flickr configuration.'); ?></a>
                     </p>
                 <?php
 
-                } else {
+            } else {
 
-                    ?>
+                ?>
                     <p>
-                        <?= \Idno\Core\Idno::site()->language()->_('The administrator has not finished setting up Flickr on this site. Please come back later.'); ?>
+                    <?= \Idno\Core\Idno::site()->language()->_('The administrator has not finished setting up Flickr on this site. Please come back later.'); ?>
                     </p>
                     </div>
                     </div>
