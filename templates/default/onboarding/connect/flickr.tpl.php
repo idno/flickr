@@ -12,12 +12,14 @@ if ($flickr = \Idno\Core\Idno::site()->plugins()->get('Flickr')) {
 <div class="social">
     <a href="<?=$login_url?>" class="connect fl <?php
 
-    if (!empty(\Idno\Core\Idno::site()->session()->currentUser()->flickr)) { echo 'connected';
+    if (!empty(\Idno\Core\Idno::site()->session()->currentUser()->flickr)) {
+        echo 'connected';
     }
 
     ?>" target="_top">Flickr<?php
 
-if (!empty(\Idno\Core\Idno::site()->session()->currentUser()->flickr)) { echo ' - connected!';
+if (!empty(\Idno\Core\Idno::site()->session()->currentUser()->flickr)) {
+    echo ' - connected!';
 }
 
 ?></a>

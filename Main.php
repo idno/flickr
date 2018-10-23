@@ -43,7 +43,7 @@ namespace IdnoPlugins\Flickr {
             \Idno\Core\Idno::site()->addEventHook('user/auth/success', function(\Idno\Core\Event $event) {
                 if ($this->hasFlickr()) {
                     if (is_array(\Idno\Core\Idno::site()->session()->currentUser()->flickr)) {
-                        foreach(\Idno\Core\Idno::site()->session()->currentUser()->flickr as $username => $details) {
+                        foreach (\Idno\Core\Idno::site()->session()->currentUser()->flickr as $username => $details) {
                             if (!in_array($username, ['access_token','username'])) {
                                 \Idno\Core\Idno::site()->syndication()->registerServiceAccount('flickr', $username, $details['username']);
                             }
@@ -60,7 +60,7 @@ namespace IdnoPlugins\Flickr {
                 $eventdata = $event->data();
                 $object = $eventdata['object'];
                 if ($attachments = $object->getAttachments()) {
-                    foreach($attachments as $attachment) {
+                    foreach ($attachments as $attachment) {
                         if ($this->hasFlickr()) {
 
                             \Idno\Core\Idno::site()->logging()->debug('Posting image to flickr...');
@@ -81,11 +81,9 @@ namespace IdnoPlugins\Flickr {
 
                             if (!$flickrAPI) {
                                 \Idno\Core\Idno::site()->logging()->error('Failed to connect to Flickr API');
-                            }
-                            else if (empty($user_details)) {
+                            } else if (empty($user_details)) {
                                 \Idno\Core\Idno::site()->logging()->error('Failed to get user_details');
-                            }
-                            else {
+                            } else {
                                 $tags = str_replace('#', '', implode(' ', $object->getTags())); // Get string of non-hashtagged tags
                                 try {
 
@@ -99,23 +97,23 @@ namespace IdnoPlugins\Flickr {
                                         $filename = tempnam(sys_get_temp_dir(), 'idnoflickr');
                                         file_put_contents($filename, $bytes);
 
-                                        if(version_compare(phpversion(), '5.5', '>=')) {
+                                        if (version_compare(phpversion(), '5.5', '>=')) {
                                             $params['photo'] = new \CURLFile($filename);
                                         } else {
                                             $params['photo'] = '@'.$filename;
                                         }
 
                                         $info = filesize($params['photo']);
-                                        if($title)       $params['title']       = $title;
-                                        if($description) $params['description'] = $description;
-                                        if($tags)        $params['tags']        = $tags;  // Space-separated string
-                                        if($perms) {
+                                        if ($title)       $params['title']       = $title;
+                                        if ($description) $params['description'] = $description;
+                                        if ($tags)        $params['tags']        = $tags;  // Space-separated string
+                                        if ($perms) {
                                             if(isset($perms['is_public'])) $params['is_public'] = $perms['is_public'];
                                             if(isset($perms['is_friend'])) $params['is_friend'] = $perms['is_friend'];
                                             if(isset($perms['is_family'])) $params['is_family'] = $perms['is_family'];
                                         }
 
-                                        if($async)       $params['async']       = $async;
+                                        if ($async)       $params['async']       = $async;
 
                                         $photo_id = $flickrAPI->upload($params);
 
@@ -132,8 +130,7 @@ namespace IdnoPlugins\Flickr {
                                                 $object->save();
                                             }
                                             \Idno\Core\Idno::site()->logging()->log($photo_id['photoid']['_content'] . ' pushed to Flickr.');
-                                        }
-                                        else {
+                                        } else {
                                             \Idno\Core\Idno::site()->logging()->error("Failed to upload image to Flickr. code={$flickrAPI->getErrorCode()}, error={$flickrAPI->getErrorMessage()}");
                                         }
 
