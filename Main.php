@@ -15,13 +15,13 @@
 
             function registerPages() {
                 // Deauth URL
-                    \Idno\Core\Idno::site()->addPageHandler('flickr/deauth','\IdnoPlugins\Flickr\Pages\Deauth',true);
+                    \Idno\Core\Idno::site()->routes()->addRoute('flickr/deauth','\IdnoPlugins\Flickr\Pages\Deauth',true);
                 // Register the callback URL
-                    \Idno\Core\Idno::site()->addPageHandler('flickr/callback','\IdnoPlugins\Flickr\Pages\Callback',true);
+                    \Idno\Core\Idno::site()->routes()->addRoute('flickr/callback','\IdnoPlugins\Flickr\Pages\Callback',true);
                 // Register admin settings
-                    \Idno\Core\Idno::site()->addPageHandler('admin/flickr','\IdnoPlugins\Flickr\Pages\Admin');
+                    \Idno\Core\Idno::site()->routes()->addRoute('admin/flickr','\IdnoPlugins\Flickr\Pages\Admin');
                 // Register settings page
-                    \Idno\Core\Idno::site()->addPageHandler('account/flickr','\IdnoPlugins\Flickr\Pages\Account');
+                    \Idno\Core\Idno::site()->routes()->addRoute('account/flickr','\IdnoPlugins\Flickr\Pages\Account');
 
                 /** Template extensions */
                 // Add menu items to account & administration screens
@@ -36,7 +36,7 @@
                     return $this->hasFlickr();
                 }, array('image'));
 
-                \Idno\Core\Idno::site()->addEventHook('user/auth/success', function(\Idno\Core\Event $event) {
+                \Idno\Core\Idno::site()->events()->addListener('user/auth/success', function(\Idno\Core\Event $event) {
                     if ($this->hasFlickr()) {
                         if (is_array(\Idno\Core\Idno::site()->session()->currentUser()->flickr)) {
                             foreach(\Idno\Core\Idno::site()->session()->currentUser()->flickr as $username => $details) {
@@ -52,7 +52,7 @@
                 });
 
                 // Push "images" to Flickr
-                \Idno\Core\Idno::site()->addEventHook('post/image/flickr',function(\Idno\Core\Event $event) {
+                \Idno\Core\Idno::site()->events()->addListener('post/image/flickr',function(\Idno\Core\Event $event) {
                     $eventdata = $event->data();
                     $object = $eventdata['object'];
                     if ($attachments = $object->getAttachments()) {
