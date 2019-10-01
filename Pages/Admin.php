@@ -24,7 +24,7 @@
                 $this->adminGatekeeper(); // Admins only
                 $apiKey = $this->getInput('apiKey');
                 $secret = $this->getInput('secret');
-                \Idno\Core\Idno::site()->config->config['flickr'] = array(
+                \Idno\Core\Idno::site()->config()->config['flickr'] = array(
                     'apiKey' => $apiKey,
                     'secret' => $secret
                 );
