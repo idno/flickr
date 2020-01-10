@@ -2,7 +2,7 @@
     "name": "idno/flickr",
     "description": "Cross-post site content to Flickr. Contains <a href=\"https://github.com/lucasgd/DPZFlickr\">a version of David Wilkinson's Flickr class</a>.",
     "type": "known-plugin",
-    "version": "0.9.9-a",
+    "version": "1.0.0",
     "require": {
         "composer/installers": "~1.0"
     },
